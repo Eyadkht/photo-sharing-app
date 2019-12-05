@@ -22,11 +22,27 @@ SECRET_KEY = '2$geg+fmgd#rificatw1x8r1bloktbl*utc%z_qtczqt6-9qec'
 import pymysql  # noqa: 402
 pymysql.install_as_MySQLdb()
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+is_proxy = False
+
+if is_proxy:
+    #cloud_sql_proxy.exe -instances=photosharingapp-261121:europe-west2:photosharing-instance=tcp:3306
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'HOST': '127.0.0.1',
+                'PORT': '3306',
+                'NAME': 'photosharingapp_db',
+                'USER': 'photoadmin',
+                'PASSWORD': 'test!@#$$',
+            }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

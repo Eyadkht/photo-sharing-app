@@ -19,13 +19,11 @@ SECRET_KEY = '2$geg+fmgd#rificatw1x8r1bloktbl*utc%z_qtczqt6-9qec'
 # Install PyMySQL as mysqlclient/MySQLdb to use Django's mysqlclient adapter
 # See https://docs.djangoproject.com/en/2.2/ref/databases/#mysql-db-api-drivers
 # for more information
-import pymysql  # noqa: 402
-pymysql.install_as_MySQLdb()
 
 DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/photosharingapp-261121:europe-west2:photosharingapp-instance',
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '/cloudsql/photosharingapp-261121:europe-west2:photosharing-instance',
             'USER': 'photoadmin',
             'PASSWORD': 'test!@#$$',
             'NAME': 'photosharingapp_db',

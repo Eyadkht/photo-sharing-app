@@ -20,6 +20,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.exe
 
 # Static Files
 #media/

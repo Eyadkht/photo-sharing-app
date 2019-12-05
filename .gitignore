@@ -9,6 +9,8 @@ __pycache__/
 # Static Files
 static/
 
+*.exe
+
 # Distribution / packaging
 .Python
 env/
