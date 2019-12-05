@@ -25,10 +25,10 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/<connection_name>',
-            'USER': 'USERNAME',
-            'PASSWORD': 'PASSWORD',
-            'NAME': 'DATABASE_NAME',
+            'HOST': '/cloudsql/photosharingapp-261121:europe-west2:photosharingapp-instance',
+            'USER': 'photoadmin',
+            'PASSWORD': 'test!@#$$',
+            'NAME': 'photosharingapp_db',
         }
 }
 
