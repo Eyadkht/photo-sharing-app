@@ -1,0 +1,40 @@
+#loginRegisterForm
+{
+	border: 2px solid gray;
+	border-radius: 15px;
+	background-color: #f1f1f1;
+	padding: 5px;
+	text-align: center
+}
+
+#loginRegisterSubmit
+{
+	background-color: white;
+	font-weight: bold;
+	border-radius: 5px;
+	border: 2px solid gray;
+	padding: 3px
+}
+#loginRegisterSubmit:hover
+{
+	background-color: gray
+}
+
+#toggleSigninRegister
+{
+	font-style: italic;
+	margin-top: 10px;
+	margin-bottom: 2px
+}
+
+#toggleSigninRegister:hover
+{
+	text-decoration: underline
+}
+
+input
+{
+	border: 0px;
+	border-bottom: 1px solid gray;
+	background-color: #f1f1f1
+}
