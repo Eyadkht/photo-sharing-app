@@ -5,6 +5,8 @@ import sys
 
 def main():
     if os.getenv('GAE_APPLICATION', None):
+        print(os.getenv('GAE_APPLICATION', None))
+        print(os.getenv('GAE_DEPLOYMENT_ID',None))
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
