@@ -19,19 +19,19 @@ SECRET_KEY = '2$geg+fmgd#rificatw1x8r1bloktbl*utc%z_qtczqt6-9qec'
 # Install PyMySQL as mysqlclient/MySQLdb to use Django's mysqlclient adapter
 # See https://docs.djangoproject.com/en/2.2/ref/databases/#mysql-db-api-drivers
 # for more information
-import pymysql  # noqa: 402
-pymysql.install_as_MySQLdb()
 
 DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/reflected-flux-261021:europe-west2:polls-instance',
-            'USER': 'usertest',
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '/cloudsql/photosharingapp-staging:europe-west2:photosharingapp-staging-instance',
+            'USER': 'photoadmin',
             'PASSWORD': 'test!@#$$',
-            'NAME': 'polls',
+            'NAME': 'photosharingapp_staging_db',
         }
 }
 
+print(os.getenv('GAE_APPLICATION', None))
+print(os.getenv('GAE_DEPLOYMENT_ID',None))
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.166.110.206', 'tallyapp.me', 'www.tallyapp.me']
 
 EMAIL_HOST = env('EMAIL_HOST')
