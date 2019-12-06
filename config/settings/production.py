@@ -29,5 +29,3 @@ DATABASES = {
             'NAME': 'photosharingapp_db',
         }
 }
-
-
