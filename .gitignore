@@ -96,3 +96,5 @@ ENV/
 #VS CODE
 *.code-workspace
 .vscode/
+
+/frontend/node_modules/*
