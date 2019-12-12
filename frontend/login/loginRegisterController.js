@@ -1,4 +1,4 @@
-loginRegisterModule.controller("loginRegisterController", function ($scope, $http, $log) {
+loginRegisterModule.controller("loginRegisterController", function ($scope, $http, $log, $window) {
 
 	$scope.title = "Login";
 
@@ -19,29 +19,6 @@ loginRegisterModule.controller("loginRegisterController", function ($scope, $htt
 
 			// Indicating that the page is now in register mode
 			$scope.LoginOrRegister = $scope.REGISTER;
-
-			//
-			$scope.save = function (form) {
-				//if (!$scope.contactForm.$valid) return;
-				console.log("Check User Details");
-
-				// REGISTER USER:
-				$http({
-					method: 'POST',
-					url: 'https://tallyapp.me/api/v1.1/auth/api-token-auth',
-					data: {
-						"username": "usertest",
-						"password": "test!@#$$"
-					}
-				}).then(function successCallback(response) {
-					// this callback will be called asynchronously
-					// when the response is available
-				}, function errorCallback(response) {
-					// called asynchronously if an error occurs
-					// or server returns response with an error status.
-				});
-			}
-
 		}
 		// Switching to the Login UI
 		else if ($scope.LoginOrRegister == $scope.REGISTER) {
@@ -52,29 +29,37 @@ loginRegisterModule.controller("loginRegisterController", function ($scope, $htt
 
 			// Indicating that the page is now in login mode
 			$scope.LoginOrRegister = $scope.LOGIN;
-			//
-			$scope.save = function (form) {
-				//if (!$scope.contactForm.$valid) return;
-				console.log("Check User Details");
-
-				// CHECK USER:
-				$http({
-					method: 'POST',
-					url: 'https://tallyapp.me/api/v1.1/auth/api-token-auth',
-					data: {
-						"username": "usertest",
-						"password": "test!@#$$"
-					}
-				}).then(function successCallback(response) {
-					// this callback will be called asynchronously
-					// when the response is available
-				}, function errorCallback(response) {
-					// called asynchronously if an error occurs
-					// or server returns response with an error status.
-				});
-			}
-
-
 		}
+	}
+
+
+
+	$scope.username="";
+	$scope.password="";
+
+	// Button Pressed - LOGIN
+	$scope.save = function (form) {
+		//if (!$scope.contactForm.$valid) return;
+		console.log("Register User Details"+$scope.username);
+		// 
+		$http({
+			method: 'POST',
+			url: 'https://tallyapp.me/api/v1.1/auth/api-token-auth',
+			data: {
+				"username": $scope.username,
+				"password": $scope.password
+			}
+		}).then(function successCallback(response) {
+			// this callback will be called asynchronously
+			// when the response is available
+			// change to next url 
+			
+		}, function errorCallback(response) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+		});
+
+		$window.location.href = './adminDashboard';
+		//$location.url('')
 	}
 });

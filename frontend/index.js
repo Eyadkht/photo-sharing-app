@@ -7,21 +7,25 @@ const router = express.Router();
 
 app.set('port', process.env.PORT || 3000);
 
-//Angularjs
-app.use(express.static('login'));
+//Organiser Login
+app.use('/', express.static('login'));
 
-app.get('/', function (req, res,next) {
-    res.redirect('/'); 
-   });
 
-//Basic routes
-router.get('/about',(request,response)=>{
-   response.status(200).send('About page');
+//app.get('/', function (req, res,next) {
+//    res.redirect('/'); 
+//   });
+
+app.use('/hi', express.static('adminDashboard'));
+
+//Organiser Dashboard
+app.get('/about',(req,res)=>{
+   //res.status(200).send('About page');
+   res.sendFile('adminDashboard.html',{root:__dirname+'/adminDashboard'});
 });
 
-app.use(router);
+//app.use(router);
 
 //Binding to a port
 app.listen(8080, ()=>{
-  console.log('Express app started at port 3000');
+  console.log('Express app started at port 8080');
 });

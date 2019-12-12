@@ -20,16 +20,16 @@
 	
 	<div id="loginRegisterForm" class="col-md-6 col-xs-12">
 		<form ng-submit="save($element.action)" id="loginForm">
-			Username: <input type="text" id="usernameBox" size="27" /><br>
-			Password: <input type="password" id="passwordBox" size="27" /><br><br>
-			<input type="submit" value="Log In" id="loginRegisterSubmit" />
+			Username: <input type="text" id="username" ng-model="username" size="27" required /><br>
+			Password: <input type="password" id="password" ng-model="password" size="27" required /><br><br>
+			<input type="submit" value="Log In" id="loginRegisterSubmit" ng-href="./next.html" />
 		</form>
 
 		<form ng-submit="save($element.action)" id="registerForm">
-			Username: <input type="text" id="usernameBox" size="27" /><br>
-			Email: <input type="text" id="usernameBox" size="27" /><br>
-			Password: <input type="password" id="passwordBox" size="27" /><br>
-			Confirm Password: <input type="password" id="passwordBox" size="27" /><br><br>
+			Username: <input type="text"  size="27" required /><br>
+			Email: <input type="text"  size="27" required /><br>
+			Password: <input type="password"  size="27" required /><br>
+			Confirm Password: <input type="password" size="27" required /><br><br>
 			<input type="submit" value="Register" id="loginRegisterSubmit" />
 		</form>
 		
