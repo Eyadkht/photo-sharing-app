@@ -22,7 +22,8 @@
 		
 		<div id="createEventButton" data-toggle="modal" data-target="#createEvent" class="col-md-4 col-xs-4 standardButton">+ Create Event</div>
 		<div id="dashboardTitle" class="col-md-4 col-xs-4 standardTitle">Manage Events</div>
-		<div id="logoutPanel" class="col-md-4 col-xs-4 standardButton">Admin</div>
+		<div id="logoutPanel" class="col-md-4 col-xs-4 standardButton" ng-click="showLogout()">Admin</div>
+				<div class="col-md-4 col-xs-4 standardButton" id="logoutButton" ng-click="logout()">Logout</div>
 		
 	</div>
 	
@@ -50,12 +51,38 @@
 		</div>
 	</div>
 	
+	
+		<div id="editEvent" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title">Edit Event</h1>
+				</div>
+				
+				<div class="modal-body">
+					Name: <input type="text" name="eventName" id="eventName" value="" /><br>
+					Date: <input type="date" name="eventDate" id="eventDate" value="" /><br>
+					Active?: <input type="checkbox" name="eventIsActive" id="eventIsActive" value="" /><br>
+					Pin: <input type="number" name="eventPin" id="eventPin" value="" max="9999" /><br>
+					Description: <input type="text" name="eventDescription" id="eventDescription" value="" /><br>
+					Location: <input type="text" name="eventLocation" id="eventLocation" value="" /><br>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn-default" data-dismiss="modal" id="createEventSubmit">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 		<h1 id="title">{{title}}</h1>
 		
-		<div class="dashboardRow col-md-12" ng-repeat="event in events">
-			<div class="col-md-4">{{event.name}}</div> 
-			<div class="col-md-4"><img src="edit.svg" />Edit</div> 
-			<div class="col-md-4">Delete</div>
+		<div class="dashboardRow col-md-12 col-xs-12" ng-repeat="event in events">
+			<div class="col-md-4 col-xs-4">{{event.name}}</div> 
+			<div class="col-md-4 col-xs-4" data-toggle="modal" data-target="#editEvent" ng-click="displayEvent($index)"><img src="edit.svg" />Edit</div> 
+			<div class="col-md-4 col-xs-4" ng-click="deleteEvent($index)"><img src="delete.png" />Delete</div>
 		</div>
 	
 	</div>
