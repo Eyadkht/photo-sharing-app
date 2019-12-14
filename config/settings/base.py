@@ -27,7 +27,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-
+    'rest_framework',
 )
 
 LOCAL_APPS = (
@@ -45,6 +45,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 ROOT_URLCONF = 'config.urls'
 

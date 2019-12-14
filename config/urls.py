@@ -16,9 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from project.users import views as core_views
+from rest_framework_simplejwt import views as jwt_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test_env',core_views.testing_endpoint,name="test_env")
+    path('test_env',core_views.testing_endpoint,name="test_env"),
+    path('test_protected_view/', core_views.TestProtectedAPI.as_view(), name='test_protected'),
 ]
+
+JWT_auth_urls = [
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+urlpatterns = urlpatterns + JWT_auth_urls
