@@ -1,40 +1,60 @@
+body{ background: linear-gradient(90deg, rgba(152,221,255,1) 0%, rgba(0,121,255,1) 100%) }
+
+p{ font-size: 11pt }
+
 #loginRegisterForm
 {
-	border: 2px solid gray;
-	border-radius: 15px;
-	background-color: #f1f1f1;
+	border-radius: 18px;
+	background-color: #ffffff;
 	padding: 5px;
-	text-align: center
+	text-align: center;
+	transition: width 0.2s ease-out
 }
 
 #loginRegisterSubmit
 {
 	background-color: white;
 	font-weight: bold;
-	border-radius: 5px;
+	border-radius: 30px;
 	border: 2px solid gray;
-	padding: 3px
+	padding: 8px;
+	font-size: 12pt;
+	width: 100%;
+	max-width: 300px;
+	transition: background 0.2s ease-out
 }
 #loginRegisterSubmit:hover
 {
-	background-color: gray
+	background-color: gray;
+	color: white
 }
 
-#toggleSigninRegister
+#toggleLoginRegisterButton
 {
 	font-style: italic;
 	margin-top: 10px;
 	margin-bottom: 2px
 }
 
-#toggleSigninRegister:hover
+#toggleLoginRegisterButton:hover
 {
 	text-decoration: underline
+}
+
+#loginForm
+{
+	display: block
+}
+
+#registerForm
+{
+	display: none
 }
 
 input
 {
 	border: 0px;
 	border-bottom: 1px solid gray;
-	background-color: #f1f1f1
+	background-color: #ffffff;
+	font-size: 11pt
 }

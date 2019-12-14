@@ -1,0 +1,1 @@
+var adminDashboardModule = angular.module("adminDashboardModule", []);

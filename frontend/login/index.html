@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login or Register</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
+<link rel="stylesheet" href="loginRegisterStyle.css" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+<script src="loginRegisterModule.js"></script>
+<script src="loginRegisterController.js"></script>
+</head>
+
+<body>
+	<div class="container" ng-app="loginRegisterModule" ng-controller="loginRegisterController" id="application">
+
+	<h1>{{title}}</h1>
+	
+	<div id="loginRegisterForm" class="col-md-6 col-xs-12">
+		<form ng-submit="save($element.action)" id="loginForm">
+			Username: <input type="text" id="username" ng-model="username" size="27" required /><br>
+			Password: <input type="password" id="password" ng-model="password" size="27" required /><br><br>
+			<input type="submit" value="Log In" id="loginRegisterSubmit" ng-href="./next.html" />
+		</form>
+
+		<form ng-submit="save($element.action)" id="registerForm">
+			Username: <input type="text"  size="27" required /><br>
+			Email: <input type="text"  size="27" required /><br>
+			Password: <input type="password"  size="27" required /><br>
+			Confirm Password: <input type="password" size="27" required /><br><br>
+			<input type="submit" value="Register" id="loginRegisterSubmit" />
+		</form>
+		
+		<p id="toggleLoginRegisterButton" ng-click="toggleLoginRegister()">Don't have an account? Register Here.</p>
+	</div>
+	
+	</div>
+</body>
+
+</html>

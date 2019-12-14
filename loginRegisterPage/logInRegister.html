@@ -19,13 +19,22 @@
 	<h1>{{title}}</h1>
 	
 	<div id="loginRegisterForm" class="col-md-6 col-xs-12">
-		<form method="POST" action="">
+		
+		<form method="POST" action="" id="loginForm">
 			Username: <input type="text" id="usernameBox" size="27" /><br>
 			Password: <input type="password" id="passwordBox" size="27" /><br><br>
 			<input type="submit" value="Log In" id="loginRegisterSubmit" />
 		</form>
 		
-		<p id="toggleSigninRegister" ng-click="toggleLoginRegister()">Don't have an account? Register Here.</p>
+		<form method="POST" action="" id="registerForm">
+			Username: <input type="text" id="usernameBox" size="27" /><br>
+			Email: <input type="text" id="usernameBox" size="27" /><br>
+			Password: <input type="password" id="passwordBox" size="27" /><br>
+			Confirm Password: <input type="password" id="passwordBox" size="27" /><br><br>
+			<input type="submit" value="Register" id="loginRegisterSubmit" />
+		</form>
+		
+		<p id="toggleLoginRegisterButton" ng-click="toggleLoginRegister()">Don't have an account? Register Here.</p>
 	</div>
 	
 	</div>

@@ -5,9 +5,13 @@ import sys
 
 def main():
     if os.getenv('GAE_APPLICATION', None):
-        # print(os.getenv('GAE_APPLICATION', None))
-        # print(os.getenv('GAE_DEPLOYMENT_ID',None))
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+        value =  os.getenv('GAE_APPLICATION', None)
+        
+        if value == "g~photosharingapp-261121":
+            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+
+        elif value == "g~photosharingapp-staging":
+            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.staging')
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
     try:

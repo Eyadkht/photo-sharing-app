@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
+<link rel="stylesheet" href="adminDashboardStyle.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+<script src="adminDashboardModule.js"></script>
+<script src="adminDashboardController.js"></script>
+</head>
+
+<body>
+	<div class="container" ng-app="adminDashboardModule" ng-controller="adminDashboardController" id="application">
+
+	<div id="dashboardHeader" class="col-md-12 col-xs-12">
+		
+		<div id="createEventButton" data-toggle="modal" data-target="#createEvent" class="col-md-4 col-xs-4 standardButton">+ Create Event</div>
+		<div id="dashboardTitle" class="col-md-4 col-xs-4 standardTitle">Manage Events</div>
+		<div id="logoutPanel" class="col-md-4 col-xs-4 standardButton" ng-click="showLogout()">Admin</div>
+				<div class="col-md-4 col-xs-4 standardButton" id="logoutButton" ng-click="logout()">Logout</div>
+		
+	</div>
+	
+	<div id="createEvent" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title">Create Event</h1>
+				</div>
+				
+				<div class="modal-body">
+					Name: <input type="text" name="eventName" value="" /><br>
+					Date: <input type="date" name="eventDate" value="" /><br>
+					Active?: <input type="checkbox" name="eventIsActive" value="" /><br>
+					Pin: <input type="number" name="eventPin" value="" /><br>
+					Description: <input type="text" name="eventDescription" value="" /><br>
+					Location: <input type="text" name="eventLocation" value="" /><br>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn-default" data-dismiss="modal" id="createEventSubmit">Create</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<div id="editEvent" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title">Edit Event</h1>
+				</div>
+				
+				<div class="modal-body">
+					Name: <input type="text" name="eventName" id="eventName" value="" /><br>
+					Date: <input type="date" name="eventDate" id="eventDate" value="" /><br>
+					Active?: <input type="checkbox" name="eventIsActive" id="eventIsActive" value="" /><br>
+					Pin: <input type="number" name="eventPin" id="eventPin" value="" max="9999" /><br>
+					Description: <input type="text" name="eventDescription" id="eventDescription" value="" /><br>
+					Location: <input type="text" name="eventLocation" id="eventLocation" value="" /><br>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn-default" data-dismiss="modal" id="createEventSubmit">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<h1 id="title">{{title}}</h1>
+		
+		<div class="dashboardRow col-md-12 col-xs-12" ng-repeat="event in events">
+			<div class="col-md-4 col-xs-4">{{event.name}}</div> 
+			<div class="col-md-4 col-xs-4" data-toggle="modal" data-target="#editEvent" ng-click="displayEvent($index)"><img src="edit.svg" />Edit</div> 
+			<div class="col-md-4 col-xs-4" ng-click="deleteEvent($index)"><img src="delete.png" />Delete</div>
+		</div>
+	
+	</div>
+</body>
+
+</html>

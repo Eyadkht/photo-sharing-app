@@ -30,13 +30,4 @@ DATABASES = {
         }
 }
 
-print(os.getenv('GAE_APPLICATION', None))
-print(os.getenv('GAE_DEPLOYMENT_ID',None))
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.166.110.206', 'tallyapp.me', 'www.tallyapp.me']
-
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Tally App <noreply@tallyapp.me>'
