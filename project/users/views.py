@@ -6,6 +6,7 @@ from django.http import HttpResponse
 def testing_endpoint(request):
     if os.getenv('GAE_APPLICATION', None):
         x = os.getenv('GAE_APPLICATION', None)
-        return HttpResponse(x)
+        context = {"env":x}
+        return HttpResponse(context)
     else:
         return HttpResponse("no GAE")
