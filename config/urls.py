@@ -20,5 +20,5 @@ from project.users import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/',core_views.testing_endpoint,name="test")
+    path('test_env',core_views.testing_endpoint,name="test_env")
 ]

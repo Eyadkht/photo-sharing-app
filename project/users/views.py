@@ -5,8 +5,8 @@ from django.http import HttpResponse
 # Create your views here.
 def testing_endpoint(request):
     if os.getenv('GAE_APPLICATION', None):
-        x = os.getenv('GAE_APPLICATION', None)
-        context = {"env":x}
-        return HttpResponse(context)
+        value = os.getenv('GAE_APPLICATION')
+        
+        return HttpResponse(value)
     else:
         return HttpResponse("no GAE")
