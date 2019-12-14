@@ -8,6 +8,6 @@ def testing_endpoint(request):
         x = os.getenv('GAE_APPLICATION')
         
         context = {"env":type(x)}
-        return HttpResponse(context)
+        return HttpResponse(x)
     else:
         return HttpResponse("no GAE")
