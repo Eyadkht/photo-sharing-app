@@ -12,7 +12,13 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 if os.getenv('GAE_APPLICATION', None):
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+        value =  os.getenv('GAE_APPLICATION', None)
+        
+        if value == "g~photosharingapp-261121":
+            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+
+        elif value == "g~photosharingapp-staging":
+            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.staging')
 else:
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
 
