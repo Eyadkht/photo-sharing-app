@@ -1,4 +1,4 @@
-loginRegisterModule.controller("loginRegisterController", function ($scope, $http, $log, $window) {
+loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$window','$cookies', function ($scope, $http, $window, $cookies) {
 
 	$scope.title = "Login";
 
@@ -34,32 +34,74 @@ loginRegisterModule.controller("loginRegisterController", function ($scope, $htt
 
 
 
-	$scope.username="";
-	$scope.password="";
+	$scope.username = "";
+	$scope.email = "";
+	$scope.password = "";
 
-	// Button Pressed - LOGIN
+	$scope.login_username = "";
+	$scope.login_password = "";
+
 	$scope.save = function (form) {
-		//if (!$scope.contactForm.$valid) return;
-		console.log("Register User Details"+$scope.username);
-		// 
-		$http({
-			method: 'POST',
-			url: 'https://tallyapp.me/api/v1.1/auth/api-token-auth',
-			data: {
-				"username": $scope.username,
-				"password": $scope.password
-			}
-		}).then(function successCallback(response) {
-			// this callback will be called asynchronously
-			// when the response is available
-			// change to next url 
-			
-		}, function errorCallback(response) {
-			// called asynchronously if an error occurs
-			// or server returns response with an error status.
-		});
+		if ($scope.LoginOrRegister == $scope.REGISTER) {
+			//if (!$scope.contactForm.$valid) return;
+			console.log("Register User Details" + $scope.username);
+			$http({
+				method: 'POST',
+				url: 'https://photosharingapp-staging.appspot.com/api/users/',
+				data: {
+					"username": $scope.username,
+					"email": $scope.email,
+					"password": $scope.password
+				}
+			}).then(function successCallback(response) {
+				// User created successfully
+				if (response.status == 201) {
+					alert('User created successfully');
+					$window.location.href = './';
+				}
+				else {
+					console.log(response.data);
+				}
 
-		$window.location.href = './adminDashboard';
-		//$location.url('')
+			}, function errorCallback(response) {
+				// Check for unique username and email
+				if(response.data.username){
+					alert(response.data.username[0])
+				}
+				else if (response.data.email){
+					alert(response.data.email[0])
+				}
+				else{
+					console.log(response.data);
+				}
+			});
+
+		}
+		else if ($scope.LoginOrRegister == $scope.LOGIN) {
+			//if (!$scope.contactForm.$valid) return;
+			console.log("Login User Details" + $scope.login_username);
+			// 
+			$http({
+				method: 'POST',
+				url: 'https://photosharingapp-staging.appspot.com/api/token/',
+				data: {
+					"username": $scope.login_username,
+					"password": $scope.login_password
+				}
+			}).then(function successCallback(response) {
+
+				if (response.status == 200) {
+					console.log(response.data);
+					$cookies.put('Authorization',response.data.access);
+					$window.location.href = './adminDashboard';
+				}
+				else {
+					console.log(response.data)
+				}
+
+			}, function errorCallback(response) {
+				console.log(response.data)
+			});
+		}
 	}
-});
+}]);

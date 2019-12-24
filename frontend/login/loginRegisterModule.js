@@ -1,1 +1,1 @@
-var loginRegisterModule = angular.module("loginRegisterModule", []);
+var loginRegisterModule = angular.module("loginRegisterModule", ['ngCookies']);

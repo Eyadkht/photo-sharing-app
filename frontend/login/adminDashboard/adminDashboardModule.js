@@ -1,1 +1,1 @@
-var adminDashboardModule = angular.module("adminDashboardModule", []);
+var adminDashboardModule = angular.module("adminDashboardModule", ['ngCookies']);
