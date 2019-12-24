@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from project.users import views as core_views
 from rest_framework_simplejwt import views as jwt_views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,3 +36,6 @@ API_urls = [
 ]
 
 urlpatterns = urlpatterns + JWT_auth_urls + API_urls
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
