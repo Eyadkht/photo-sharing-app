@@ -3,23 +3,24 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.title = "Events";
 	
 	console.log("In dashboard controller");
-
+	var auth = "Bearer "+ $cookies.get('Authorization')
+	console.log(auth)
 	// GET events created
-	$http({
-		method: 'GET',
-		url: 'https://tallyapp.me/api/v1.1/location/',
-		params: {
-			query: 'id'
-		}
-	}).then(function successCallback(response) {
-		// this callback will be called asynchronously
-		// when the response is available
-		// change to next url 
-		
-	}, function errorCallback(response) {
-		// called asynchronously if an error occurs
-		// or server returns response with an error status.
-	});
+	    $http({
+		        method: 'GET',
+		        url: 'https://photosharingapp-staging.appspot.com/test_protected_view/',
+		        headers:{
+		            'Authorization': auth
+		        }
+		    }).then(function successCallback(response) {
+				// this callback will be called asynchronously
+		        // when the response is available
+		        // change to next url 
+		        
+		    }, function errorCallback(response) {
+		        // called asynchronously if an error occurs
+		        // or server returns response with an error status.
+		    });
 	
 	
 	$scope.events =
