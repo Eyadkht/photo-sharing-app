@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'project.users',
+    'project.events',
     'project.api',
 )
 
@@ -117,3 +118,7 @@ USE_TZ = True
 
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'media'
