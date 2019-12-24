@@ -15,7 +15,7 @@ app.use('/', express.static('login'));
 //    res.redirect('/'); 
 //   });
 
-app.use('/hi', express.static('adminDashboard'));
+//app.use('/hi', express.static('adminDashboard'));
 
 //Organiser Dashboard
 app.get('/about',(req,res)=>{
@@ -26,6 +26,6 @@ app.get('/about',(req,res)=>{
 //app.use(router);
 
 //Binding to a port
-app.listen(8080, ()=>{
-  console.log('Express app started at port 8080');
+app.listen(3000, ()=>{
+  console.log('Express app started at port 3000');
 });
