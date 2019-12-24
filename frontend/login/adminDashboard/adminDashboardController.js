@@ -1,4 +1,4 @@
-adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', function($scope, $http, $cookies){
+adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', '$window', function($scope, $http, $cookies, $window){
 	
 	$scope.title = "Events";
 	
@@ -86,5 +86,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.logout = function()
 	{
 		document.getElementById('logoutButton').style.display = "none";
+	}
+
+
+	$scope.eventlink = function (){
+		console.log('here')
+		$window.location.href = './events';	
 	}
 }]);

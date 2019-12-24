@@ -1,0 +1,16 @@
+<button ngf-select="uploadFiles($files, $invalidFiles)" 
+          accept="image/*" ngf-max-height="1000" ngf-max-size="10MB">
+      Select Image
+</button>
+<br><br>
+<span ng-repeat="f in files">
+	{{f.name}} {{f.$errorParam}}
+    <span class="progress" ng-show="f.progress >= 0">
+      <span style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></span>
+    </span>
+    <div>Serving url for the image: <b>/api/image/read/{{f.name}}</b></div>
+</span>
+<span ng-repeat="f in errFiles" style="font:smaller">
+{{f.name}} {{f.$error}} {{f.$errorParam}}
+</span>
+{{errorMsg}}

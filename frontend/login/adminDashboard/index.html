@@ -81,7 +81,7 @@
 		<h1 id="title">{{title}}</h1>
 		
 		<div class="dashboardRow col-md-12 col-xs-12" ng-repeat="event in events">
-			<div class="col-md-4 col-xs-4">{{event.name}}</div> 
+			<div class="col-md-4 col-xs-4" ng-click="eventlink($index)">{{event.name}}</div> 
 			<div class="col-md-4 col-xs-4" data-toggle="modal" data-target="#editEvent" ng-click="displayEvent($index)"><img src="edit.svg" />Edit</div> 
 			<div class="col-md-4 col-xs-4" ng-click="deleteEvent($index)"><img src="delete.png" />Delete</div>
 		</div>

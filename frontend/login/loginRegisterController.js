@@ -93,6 +93,7 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 				if (response.status == 200) {
 					console.log(response.data);
 					$cookies.put('Authorization',response.data.access);
+					$cookies.put('Refresh', response.data.refresh);
 					$window.location.href = './adminDashboard';
 				}
 				else {
