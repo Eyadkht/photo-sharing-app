@@ -21,6 +21,7 @@ class Event(models.Model):
 class Image(models.Model):
     image = models.ImageField(upload_to=event_image_directory_path, blank=False)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_images')
+    nickname = models.CharField(max_length=250)
 
     def __str__(self):
         return self.image.name

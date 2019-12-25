@@ -7,4 +7,4 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display=('image','event')
+    list_display=('image','event','nickname')
