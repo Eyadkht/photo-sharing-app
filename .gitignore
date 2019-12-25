@@ -99,3 +99,5 @@ ENV/
 .vscode/
 
 /frontend/node_modules/*
+
+/frontend/google-services-private-key.pem 
