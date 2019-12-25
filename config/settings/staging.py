@@ -30,3 +30,7 @@ DATABASES = {
 }
 
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.166.110.206', 'tallyapp.me', 'www.tallyapp.me']
+from google.oauth2 import service_account
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'photosharing_storage'

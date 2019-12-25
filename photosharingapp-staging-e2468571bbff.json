@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "photosharingapp-staging",
+  "private_key_id": "e2468571bbff32f0f5b391d89388e32f5b78b39e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCv3nVzMrE0hr/m\nYivmDYMaUwOCsPwLLUhEFMmQTd+q5p1actBWgnvMHgvRlRkf+VzrUMeAOIDU6Dme\noZpLPnb+dusi4JIgx8TJLUmqMTaZiB9VGxCLrRDQn0W0W6SgHc51oc4tHIUtNbhz\nlMXvjs8IsfhYpIcYYPjwNyt6dBYrUvfh8W1frH47pBKrpfImCngsAi08oqW0dEwJ\nFXSolHBfHJWU7Ng3jelvRFOg0TBGcSRujB8E+0Q3UFaMgwvWsubHHLfYBN1zh/FD\nwLcdnTA9Auoz4wcU1jOiopW8pZbaSQqkglqxFYLRW2OUDrK3Z9keATcFf2aQYZA8\npQ0jzjp5AgMBAAECggEAS//lX3fbjihhC00HTW4vZpPTI4oaETZrUUhuZlbQvkjU\nXP7au1e96dJeJx64cdHP7rzEycshGWCVbdDGHZgL0iFPsY28eD/78TgJ6mtD/gsO\nBzgf6UxLxOvfMnab6LmYu8rFj0cQ4h2h7QiwlLpxC3/lI2FOJCHb0er1dgBuiB+l\noxaz7LNjuORck17DWgzQGKIgvFqIahXt2wb862K3PsGj6nNGZrzs+NN7PTToAP35\ndXfGc90WsvkVNTTI3lWDZt8FxXzGWHz4628tPKz5FY1c0n1ElMh8Bqyv749E0LVr\nrEQZJfigJ5ZgnfpAqkBgd4E36kW8LUIVabl1QT70JQKBgQDlIb6r4/4XGFQy7ipe\njaMIsZuHLFzWJETH7bt5el8HkwMLeleMrWeJidY3tUwwvl6W7dkPNEQYNFRuPN6x\nnThC1ghl7/4H9JeOPZvuVaBzHlt0stJ2+HUjgWmg1qz4zDX5VH/ysEbSQ2yQwgwy\nbLF93AfKdi6bqerJFObunO42EwKBgQDEfdREw+bgTBZTdnn896F+PDMz/kFNZIqG\nBgeESw5c/N4Qdk1xjvuhdcFgurvGJHOKItohSph4OIjM39qa729vI93xdAMlwLbw\nVvHJtqzceyqmpttdzp0z5YVeZuelur+tYv5s3ZoEVkz5aiZ0EPXXbkBVQJP6I6qO\nwI+fI8IOwwKBgDiYyTw0KMMTo1ihM53/ZlHzbPNKpfPPKZ4ovrIW4/o++fWP1qhM\n/NIgVeWUxqkTnNGzFnaG9nr0EhbYujktGISJ0bE8Qoc8h2L/HNEWHXfR+80rjokM\nfgKzKKAt5rPd3Uck9CXCHPw640ouZEzgREdOXi5IWuLgaboZi6FM6ho5AoGAGPZ7\nbzkMLda8x2G34cF8DNONFb/pf/GT/67oaZA3hOzDMYg2EoU9xqd1J9rRXDzpSNVg\nrPYTJMLZ7l1KIoDkwVPnMHOyqqsvEp2ZHi1NDL3BD2cHW4WSRzOTnAiqyU1OaLK4\n7A/DL2XfZZhsxjYZZYMmPS51HkRFuNkR5f/e+Y0CgYBxtUgGpTeMEtjiYWRQvxd3\nkLt9+ngJFsJk5eAiB6UvXRM/tQ8w1YRM1FK/h/duJBABd+btLTJhIhD5Cbj2uSnx\npC5BwEfBEZEEbHzeO1r3z5YDLgCqte8V1R8CHCGGrJXwJzf6VzXaVDFr53iltopx\nQxCylhK5tT4/uaI4cdFWtg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "cloudstorage-staging@photosharingapp-staging.iam.gserviceaccount.com",
+  "client_id": "115752169201964676581",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cloudstorage-staging%40photosharingapp-staging.iam.gserviceaccount.com"
+}
