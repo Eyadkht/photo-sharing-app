@@ -8,7 +8,7 @@ def event_image_directory_path(instance, filename):
     '''
     Image will be uploaded to the following path events/<event_id>_<event_name>/images/<filename>
     '''
-    return 'events/id_{0}_{1}/images/{2}/{3}'.format(instance.event.pk, instance.event.name, instance.pk, 'event_'+filename)
+    return 'events/id_{0}_{1}/images/{2}'.format(instance.event.pk, instance.event.name, 'event_'+filename)
 
 class Event(models.Model):
     name = models.CharField(max_length=250)
