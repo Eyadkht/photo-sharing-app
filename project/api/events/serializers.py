@@ -11,5 +11,5 @@ class EventSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Event
-        fields = ['name', 'description','url_key']
+        fields = ['name', 'description','url_key','password','is_password_protected']
         read_only_fields = ('url_key',)
