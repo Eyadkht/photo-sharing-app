@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
-from project.api.events.serializers import ImageSerializer, EventSerializer
+from project.api.events.serializers import ImageSerializer, EventSerializer, EventPublicUserSerializer
 from project.events.models import Image, Event
 from project.users.models import User
 from rest_framework.permissions import IsAuthenticated
@@ -74,3 +74,25 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,IsEventOrganizer,)
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+
+class MultipleFieldLookupMixin(object):
+    """
+    Apply this mixin to any view or viewset to get multiple field filtering
+    based on a `lookup_fields` attribute, instead of the default single field filtering.
+    """
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]: # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+class EventDetailPublicUser(MultipleFieldLookupMixin, generics.RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventPublicUserSerializer
+    lookup_fields = ['url_key']
