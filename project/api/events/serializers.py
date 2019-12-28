@@ -34,6 +34,7 @@ class CustomPagination(LimitOffsetPagination):
             },
             'objects': data
         }
+        
 class EventPublicUserSerializer(serializers.ModelSerializer):
     event_images = serializers.SerializerMethodField('paginated_tracks')
 

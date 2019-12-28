@@ -70,23 +70,44 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
-class MultipleFieldLookupMixin(object):
-    """
-    Apply this mixin to any view or viewset to get multiple field filtering
-    based on a `lookup_fields` attribute, instead of the default single field filtering.
-    """
-    def get_object(self):
-        queryset = self.get_queryset()             # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        filter = {}
-        for field in self.lookup_fields:
-            if self.kwargs[field]: # Ignore empty fields.
-                filter[field] = self.kwargs[field]
-        obj = get_object_or_404(queryset, **filter)  # Lookup the object
-        self.check_object_permissions(self.request, obj)
-        return obj
+class EventDetailPublicUser(APIView):
+    @transaction.atomic
+    def get(self, request, url_key):
+        
+        try:
+            event = Event.objects.get(url_key=url_key)
+        except Event.DoesNotExist:
+            content = {'details': "Event not Found"}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
 
-class EventDetailPublicUser(MultipleFieldLookupMixin, generics.RetrieveAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventPublicUserSerializer
-    lookup_fields = ['url_key']
+        if event.is_password_protected:
+            content = {'detail': "Event is password protected"}
+            return Response(content, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            event_serializer = EventPublicUserSerializer(event,context={'request': request})
+            return Response(event_serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, url_key):
+        
+        try:
+            password = request.data['password']
+        except Event.DoesNotExist:
+            content = {'details': "Password parameter not Found"}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            event = Event.objects.get(url_key=url_key)
+        except Event.DoesNotExist:
+            content = {'details': "Event not Found"}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+        if event.is_password_protected:
+            if event.password == password:
+                event_serializer = EventPublicUserSerializer(event,context={'request': request})
+                return Response(event_serializer.data, status=status.HTTP_200_OK)
+            else:
+                content = {'detail': "Password is incorrect"}
+                return Response(content, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    
