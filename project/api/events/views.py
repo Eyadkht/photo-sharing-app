@@ -10,7 +10,7 @@ from project.users.models import User
 from rest_framework.permissions import IsAuthenticated
 from django.core import exceptions
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import BasePermission
+from project.api.events.permissions import IsEventOrganizer
 
 class ImageUploadView(APIView):
     parser_class = (FileUploadParser,)
@@ -46,12 +46,7 @@ class MediaInteraction(APIView):
         content = {"new_likes":likes}
 
         return Response(content, status=status.HTTP_200_OK)
-
-class IsEventOrganizer(BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        return request.user.pk == obj.organizer.pk
-        
+    
 class EventList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
