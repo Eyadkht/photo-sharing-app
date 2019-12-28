@@ -25,6 +25,7 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', function ($sc
         $scope.files = files;
         $scope.errFiles = errFiles;
         angular.forEach(files, function(file) {
+            //console.log(Date.now());
             file.upload = Upload.upload({
                 url: 'https://photo_app_bucket.storage.googleapis.com',
                 data: {

@@ -1,0 +1,17 @@
+<root>
+<element>
+<maxAgeSeconds>3600</maxAgeSeconds>
+<method>
+<element>GET</element>
+<element>HEAD</element>
+<element>DELETE</element>
+<element>POST</element>
+</method>
+<origin>
+<element>*</element>
+</origin>
+<responseHeader>
+<element>Content-Type</element>
+</responseHeader>
+</element>
+</root>

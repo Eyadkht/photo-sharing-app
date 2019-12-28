@@ -75,7 +75,6 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 					console.log(response.data);
 				}
 			});
-
 		}
 		else if ($scope.LoginOrRegister == $scope.LOGIN) {
 			//if (!$scope.contactForm.$valid) return;
