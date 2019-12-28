@@ -5,7 +5,7 @@ class ImageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Image
-        fields = ['image','event','nickname']
+        fields = ['pk','image','likes','uploaded_at','event','nickname']
 
 class EventSerializer(serializers.ModelSerializer):
     
@@ -15,7 +15,8 @@ class EventSerializer(serializers.ModelSerializer):
         read_only_fields = ('url_key',)
 
 class EventPublicUserSerializer(serializers.ModelSerializer):
-    
+    event_images = ImageSerializer(many=True)
+
     class Meta:
         model = Event
-        fields = ['pk','name', 'description','url_key','is_password_protected']
+        fields = ['pk','name', 'description','url_key','is_password_protected','event_images']

@@ -75,7 +75,6 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
-
 class MultipleFieldLookupMixin(object):
     """
     Apply this mixin to any view or viewset to get multiple field filtering

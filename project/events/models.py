@@ -41,7 +41,7 @@ class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['likes','uploaded_at']
+        ordering = ['-likes','uploaded_at']
 
     def __str__(self):
         return self.image.name
