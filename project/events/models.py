@@ -38,6 +38,10 @@ class Image(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_images')
     nickname = models.CharField(max_length=250)
     likes = models.IntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['likes','uploaded_at']
 
     def __str__(self):
         return self.image.name
