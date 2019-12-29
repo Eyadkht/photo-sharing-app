@@ -3,8 +3,10 @@ var app = angular.module('fileUpload', ['ngFileUpload']);
 
 
 app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', function ($scope, Upload, $timeout, $http) {
-    console.log('hi');
 
+    // url_key: window.location.search.substring(2)
+
+    
     $http({
 		        method: 'GET',
 		        url: '../../../storage'

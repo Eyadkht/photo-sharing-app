@@ -62,16 +62,16 @@
 				</div>
 				
 				<div class="modal-body">
-					Name: <input type="text" name="eventName" id="eventName" value="" /><br>
-					Date: <input type="date" name="eventDate" id="eventDate" value="" /><br>
-					Active?: <input type="checkbox" name="eventIsActive" id="eventIsActive" value="" /><br>
-					Pin (Digits Only): <input type="number" name="eventPin" id="eventPin" value="" max="9999" /><br>
-					Description: <input type="text" name="eventDescription" id="eventDescription" value="" /><br>
-					Location: <input type="text" name="eventLocation" id="eventLocation" value="" /><br>
+					Name: <input type="text" ng-model="EditeventName" id="eventName" value="" /><br>
+					Date: <input type="date" ng-model="EditeventDate" id="eventDate" value="" /><br>
+					Active?: <input type="checkbox" ng-model="EditeventIsActive" id="eventIsActive" value="" /><br>
+					Pin (Digits Only): <input type="number" ng-model="EditeventPin" id="eventPin" value="" max="9999" /><br>
+					Description: <input type="text" ng-model="EditeventDescription" id="eventDescription" value="" /><br>
+					Location: <input type="text" ng-model="EditeventLocation" id="eventLocation" value="" /><br>
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn-default" data-dismiss="modal" id="createEventSubmit">Save</button>
+					<button type="button" class="btn-default" data-dismiss="modal" id="createEventSubmit" ng-click="saveEvent()">Save</button>
 				</div>
 			</div>
 		</div>
@@ -83,8 +83,8 @@
 		<div class="dashboardRow col-md-12 col-xs-12" ng-repeat="event in events">
 			<div class="col-md-3 col-xs-3" ng-click="eventlink(event)">{{event.name}}</div> 
 			<div class="col-md-3 col-xs-3" ng-click="showQR(event)"><img src="qr.png" /> Show QR</div>
-			<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent" ng-click="displayEvent(event)"><img src="edit.svg" />Edit</div> 
-			<div class="col-md-3 col-xs-3" ng-click="deleteEvent(event)"><img src="delete.png" />Delete</div>
+			<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent" ng-click="displayEvent($index)"><img src="edit.svg" />Edit</div> 
+			<div class="col-md-3 col-xs-3" ng-click="deleteEvent($index)"><img src="delete.png" />Delete</div>
 		</div>
 	
 	</div>
