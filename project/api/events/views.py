@@ -26,12 +26,14 @@ class ImageUploadView(APIView):
           return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ImageDeleteView(APIView):
+    permission_classes = (IsAuthenticated,)
+    
     @transaction.atomic
-    def get(self, request, id):
-
+    def delete(self, request, pk):
+        
         # Check if the Image object with the requested id exists
         try:
-            image = Image.objects.get(pk=id)
+            image = Image.objects.get(pk=pk)
         except Image.DoesNotExist:
             content = {'details': "Media Not Found"}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
