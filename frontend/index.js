@@ -11,7 +11,7 @@ var CloudStorage = require("gcs-signed-urls")("./google-services-private-key.pem
   , "photosharing-261420@appspot.gserviceaccount.com"
   , "photo_app_bucket");
 
-console.log(CloudStorage)
+CloudStorage.cors("cloud.xml")
 
 var uploadVars = CloudStorage.uploadRequest("example.jpeg", "key" + Date.now()); // TODO: maybe provide configurable parameters instead of hardcoding them
 
@@ -27,7 +27,7 @@ app.get('/storage', function (req, res) {
 
 //app.use(router);
 
-//Binding to a port
-app.listen(3000, () => {
-  console.log('Express app started at port 3000');
+// Google cloud only works on 8080
+app.listen(8080, () => {
+  console.log('Express app started at port 8080');
 });
