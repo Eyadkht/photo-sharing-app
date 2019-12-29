@@ -188,7 +188,8 @@ $scope.showLogout = function () {
 }
 
 $scope.logout = function () {
-	document.getElementById('logoutButton').style.display = "none";
+	$window.location.href = '../';
+	//document.getElementById('logoutButton').style.display = "none";
 }
 
 
