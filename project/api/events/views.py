@@ -25,6 +25,20 @@ class ImageUploadView(APIView):
       else:
           return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ImageDeleteView(APIView):
+    @transaction.atomic
+    def get(self, request, id):
+
+        # Check if the Image object with the requested id exists
+        try:
+            image = Image.objects.get(pk=id)
+        except Image.DoesNotExist:
+            content = {'details': "Media Not Found"}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+        image.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class MediaInteraction(APIView):
     @transaction.atomic
     def put(self, request):
@@ -58,10 +72,12 @@ class EventList(generics.ListCreateAPIView):
             content = {'details': "User does not exist"}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         
+        # Retrieving all the events created by the Authenticated User
         queryset = Event.objects.filter(organizer=organizer)
         serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    # Saving the organizer object to the Event
     def perform_create(self, serializer):
         serializer.save(organizer=self.request.user)
 
@@ -71,7 +87,8 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
 
 class EventDetailPublicUser(APIView):
-    @transaction.atomic
+
+    # Retrieving an event that is not password protected by URL_Key 
     def get(self, request, url_key):
         
         try:
@@ -87,6 +104,7 @@ class EventDetailPublicUser(APIView):
             event_serializer = EventPublicUserSerializer(event,context={'request': request})
             return Response(event_serializer.data, status=status.HTTP_200_OK)
     
+    # Retrieving a password protected event by URL_Key and Password
     def post(self, request, url_key):
         
         try:
@@ -110,4 +128,3 @@ class EventDetailPublicUser(APIView):
                 return Response(content, status=status.HTTP_401_UNAUTHORIZED)
 
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
-    
