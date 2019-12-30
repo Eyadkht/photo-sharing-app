@@ -1,6 +1,6 @@
 adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 
-	$scope.title = "Events";
+	$scope.title = "Your Events";
 
 	console.log("In dashboard controller");
 	var auth = "Bearer " + $cookies.get('Authorization')

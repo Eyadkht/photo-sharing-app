@@ -2,19 +2,21 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+var favicon = require('serve-favicon');
 app.use(cors());
-const router = express.Router();
+app.use(favicon(__dirname + '/favicon.ico'));
 
 app.set('port', process.env.PORT || 3000);
 
+
+
+
+// Not using 
 var CloudStorage = require("gcs-signed-urls")("./google-services-private-key.pem"
   , "photosharing-261420@appspot.gserviceaccount.com"
   , "photo_app_bucket");
-
 CloudStorage.cors("cloud.xml")
-
 var uploadVars = CloudStorage.uploadRequest("example.jpeg", "key" + Date.now()); // TODO: maybe provide configurable parameters instead of hardcoding them
-
 
 //Organiser Login
 app.use('/', express.static('login'));
@@ -25,9 +27,8 @@ app.get('/storage', function (req, res) {
   res.send({ cloud: uploadVars });
 });
 
-//app.use(router);
 
 // Google cloud only works on 8080
-app.listen(8080, () => {
+app.listen(3000, () => {
   console.log('Express app started at port 8080');
 });

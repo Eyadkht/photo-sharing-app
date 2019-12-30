@@ -33,13 +33,13 @@
 						<h5 class="card-title text-center">{{title}}</h5>
 						<form class="form-signin" ng-submit="save($element.action)" id="loginForm">
 								<div class="form-label-group">
-										<input type="text" id="username" class="form-control" placeholder="username" required autofocus ng-model="login_username">
-										<label for="username">Username</label>
+										<input type="text" id="login_username" class="form-control" placeholder="username" required autofocus ng-model="login_username">
+										<label for="login_username">Username</label>
 									  </div>
 						
 									  <div class="form-label-group">
-										<input type="password" id="password" class="form-control" placeholder="Password" required ng-model="login_password">
-										<label for="password">Password</label>
+										<input type="password" id="login_password" class="form-control" placeholder="Password" required ng-model="login_password">
+										<label for="login_password">Password</label>
 									  </div>
 									  <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" id="loginRegisterSubmit">Sign in</button>		  
 						</form>
