@@ -30,7 +30,10 @@
 				</textarea>
 			</div> 
 			<div id="uploadDownload" class="col-md-6 col-sm-6">
-				Upload: <input type="file" id="Upload" />
+				<form action="" method="post" enctype="multipart/form-data">
+					Upload Photos: <input type="file" id="Upload" accept=".png, .jpg, .jpeg, video/*" multiple/>
+					<input type="submit" value="Upload" />
+				</form>
 				<div id="Download">Download All</div>
 			</div> 
 		</div>
@@ -44,11 +47,16 @@
 		
 		<div id="fullscreenPhotoContainer">
 			<img id="closeFullscreen" ng-click="closeFullscreen()" src="close.svg" />
+			<img id="infoFullscreen" ng-click="showInfo()" src="info.svg">
+			<img id="likeButton" ng-click="sendLike()" src="like.png">
 			<img ng-src="{{fullscreenPhotoURL}}" id="fullscreenPhoto" />
+			    <img id="left" src="left.svg" ng-click="switchPhoto(0)" />
+			    <img id="right" src="right.svg" ng-click="switchPhoto(1)" />
 			<div id="photoInfo">
 				Uploaded By: {{fullscreenUploadedBy}}<br>
 				Date: {{fullscreenDate}}<br>
 				Description: {{fullscreenDescription}}
+				<div id="closeInfo" ng-click="closeInfo()">OK</div>
 			</div>
 		</div>
 	
