@@ -60,7 +60,7 @@
 					<div class="card-body">
 						<h7 class="card-title pricing-card-title">{{event.description}}</h1>
 							<div class="row" style="padding-bottom: 10px;">
-								<div class="col-md-3 col-xs-3" ng-click="showQR(event)"><img src="qr.png" /> Show QR
+								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage" ng-click="showQR(event)"><img src="qr.png" /> Show QR
 								</div>
 								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent"
 									ng-click="displayEvent($index)">
@@ -101,7 +101,22 @@
 	</div>
 
 	
-	<div id="editEvent" class="modal">
+	<div id="showImage" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">QR code</h1>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>	
+					<div class="modal-body">
+					<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:8080/adminDashboard/events/?=f3804e33b6e25fe0c6d8f50b6a3478d55664b6d6db0ff9808644c1eeeef97cfe&size=500x500" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="editEvent" class="modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -117,14 +132,13 @@
 							<input type="text" ng-model="EditeventDescription"  class="form-control mb-1" placeholder="Description" required /><br>
 							<input type="text" ng-model="EditeventLocation"  class="form-control mb-1" placeholder="Location"/><br>
 							Active? <input type="checkbox" ng-model="EditeventIsActive" value="" /><br>
-							<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal" id="createEventSubmit"
-							ng-click="saveEvent()">Create</button>
+							<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal" id="EditEventSubmit"
+							ng-click="saveEvent()">Edit</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-
 </body>
 
 </html>
