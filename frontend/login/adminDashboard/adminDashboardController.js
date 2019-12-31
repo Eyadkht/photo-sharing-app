@@ -2,6 +2,8 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	$scope.title = "Your Events";
 
+	
+
 	console.log("In dashboard controller");
 	var auth = "Bearer " + $cookies.get('Authorization')
 	console.log(auth)
@@ -97,7 +99,6 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.showQR = function (event) {
 		console.log(event.url_key)
 		var qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=' + event.url_key + '&size=500x500'
-		console.log(qr_url)
 		// Gemerate QR code
 		$http({
 			method: 'GET',

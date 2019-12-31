@@ -1,4 +1,4 @@
-eventPageModule.controller("eventPageController", function($scope){
+eventPageModule.controller("eventPageController", ['$scope','$http', function($scope, $http){
 	
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -11,15 +11,40 @@ eventPageModule.controller("eventPageController", function($scope){
 	$scope.LEFT = 0;
 	$scope.RIGHT = 1;
 	
-	
 	// Preloading event details and photos with dummy data
 	$scope.eventDetails = 
 	{
-		name: "Birthday Photos",
-		date: "02-04-2020",
-		location: "Westminster, London, UK",
-		description: "Lorem ipsum dolor sit amet consectetur elit ..."
+		name: "",
+		date: "",
+		location: "",
+		description: ""
 	};
+
+	$scope.nickname ="";
+
+	// Get URL_KEY:
+	$scope.url_key=window.location.search.substring(2)
+	// Get event details and images 	
+    $http({
+		        method: 'GET',
+		        url: 'https://photosharingapp-staging.appspot.com/api/event/'+$scope.url_key
+		    }).then(function successCallback(response) {
+				$scope.eventDetails.name = response.data.name;
+				$scope.eventDetails.location= response.data.location;
+				$scope.eventPk=response.data.pk;
+                
+                
+                // this callback will be called asynchronously
+		        // when the response is available
+		        // change to next url 
+		        
+		    }, function errorCallback(response) {
+		        // called asynchronously if an error occurs
+		        // or server returns response with an error status.
+            });
+        	
+
+
 	
 	$scope.photos =
 	[
@@ -118,4 +143,4 @@ eventPageModule.controller("eventPageController", function($scope){
 		}
 	}
 
-});
+}]);

@@ -50,6 +50,7 @@
 
 
 
+
 	<div class="container">
 		<h2 class="display-5">{{title}}</h1>
 			<div class="card-deck mb-3 text-center" ng-repeat="event in events">
@@ -60,7 +61,8 @@
 					<div class="card-body">
 						<h7 class="card-title pricing-card-title">{{event.description}}</h1>
 							<div class="row" style="padding-bottom: 10px;">
-								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage" ng-click="showQR(event)"><img src="qr.png" /> Show QR
+								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage"
+									ng-click="showQR(event)"><img src="qr.png" /> Show QR
 								</div>
 								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent"
 									ng-click="displayEvent($index)">
@@ -80,65 +82,75 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Create Event</h1>
+					<h4 class="modal-title">Create Event</h4>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<div class="modal-body">
 					<form class="text-center p-5">
-						<input type="text" ng-model="eventName" class="form-control mb-1" placeholder="Name" required /><br>
-						<input type="date" ng-model="eventDate"  class="form-control mb-1" placeholder="Date" /><br>
- 						<input type="number" ng-model="eventPin"  class="form-control mb-1" placeholder="Pin (Digits Only)" /><br>
-						<input type="text" ng-model="eventDescription"  class="form-control mb-1" placeholder="Description" required /><br>
-						<input type="text" ng-model="eventLocation"  class="form-control mb-1" placeholder="Location"/><br>
+						<input type="text" ng-model="eventName" class="form-control mb-1" placeholder="Name"
+							required /><br>
+						<input type="date" ng-model="eventDate" class="form-control mb-1" placeholder="Date" /><br>
+						<input type="number" ng-model="eventPin" class="form-control mb-1"
+							placeholder="Pin (Digits Only)" /><br>
+						<input type="text" ng-model="eventDescription" class="form-control mb-1"
+							placeholder="Description" required /><br>
+						<input type="text" ng-model="eventLocation" class="form-control mb-1"
+							placeholder="Location" /><br>
 						Active? <input type="checkbox" ng-model="eventIsActive" value="" /><br>
-						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal" id="createEventSubmit"
-						ng-click="createEvent()">Create</button>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="createEventSubmit" ng-click="createEvent()">Create</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	
+
 	<div id="showImage" class="modal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">QR code</h1>
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>	
-					<div class="modal-body">
-					<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:8080/adminDashboard/events/?=f3804e33b6e25fe0c6d8f50b6a3478d55664b6d6db0ff9808644c1eeeef97cfe&size=500x500" />
-					</div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">QR code</h1>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<img id="qr"
+						src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:8080/adminDashboard/events/?=f3804e33b6e25fe0c6d8f50b6a3478d55664b6d6db0ff9808644c1eeeef97cfe&size=500x500" />
 				</div>
 			</div>
 		</div>
+	</div>
 
 
-		<div id="editEvent" class="modal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">Edit Event</h1>
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-	
-					<div class="modal-body">
-						<form class="text-center p-5">
-							<input type="text" ng-model="EditeventName" class="form-control mb-1" placeholder="Name" required /><br>
-							<input type="date" ng-model="EditeventDate"  class="form-control mb-1" placeholder="Date" /><br>
-							 <input type="number" ng-model="EditeventPin"  class="form-control mb-1" placeholder="Pin (Digits Only)" /><br>
-							<input type="text" ng-model="EditeventDescription"  class="form-control mb-1" placeholder="Description" required /><br>
-							<input type="text" ng-model="EditeventLocation"  class="form-control mb-1" placeholder="Location"/><br>
-							Active? <input type="checkbox" ng-model="EditeventIsActive" value="" /><br>
-							<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal" id="EditEventSubmit"
-							ng-click="saveEvent()">Edit</button>
-						</form>
-					</div>
+
+	<div id="editEvent" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit Event</h1>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<div class="modal-body">
+					<form class="text-center p-5">
+						<input type="text" ng-model="EditeventName" class="form-control mb-1" placeholder="Name"
+							required /><br>
+						<input type="date" ng-model="EditeventDate" class="form-control mb-1" placeholder="Date" /><br>
+						<input type="number" ng-model="EditeventPin" class="form-control mb-1"
+							placeholder="Pin (Digits Only)" /><br>
+						<input type="text" ng-model="EditeventDescription" class="form-control mb-1"
+							placeholder="Description" required /><br>
+						<input type="text" ng-model="EditeventLocation" class="form-control mb-1"
+							placeholder="Location" /><br>
+						Active? <input type="checkbox" ng-model="EditeventIsActive" value="" /><br>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="EditEventSubmit" ng-click="saveEvent()">Edit</button>
+					</form>
 				</div>
 			</div>
 		</div>
+	</div>
 </body>
 
 </html>
