@@ -1,4 +1,41 @@
-eventPageModule.controller("eventPageController", ['$scope','$http', function($scope, $http){
+eventPageModule.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+eventPageModule.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(file, uploadUrl,eventPk,nickname){
+        var fd = new FormData();
+		fd.append('image', file);
+		fd.append('event', eventPk);
+		fd.append('nickname',nickname)
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .then(function successCallback(response){
+			console.log(response.data);
+		},
+		function errorCallback(response){
+			console.log(response.data);
+		});
+        
+    }
+}]);
+
+
+eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http', function($scope,fileUpload, $http){
 	
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -20,7 +57,7 @@ eventPageModule.controller("eventPageController", ['$scope','$http', function($s
 		description: ""
 	};
 
-	$scope.nickname ="";
+	$scope.nickname ="";	 	
 
 	// Get URL_KEY:
 	$scope.url_key=window.location.search.substring(2)
@@ -43,6 +80,12 @@ eventPageModule.controller("eventPageController", ['$scope','$http', function($s
 		        // or server returns response with an error status.
             });
         	
+		$scope.uploadFile = function(){
+			var file = $scope.myFile;
+			console.log('file is ' ); console.dir(file);
+			var uploadUrl = "https://photosharingapp-staging.appspot.com/api/upload_image/";
+			fileUpload.uploadFileToUrl(file, uploadUrl, $scope.eventPk, $scope.nickname);
+		};
 
 
 	
