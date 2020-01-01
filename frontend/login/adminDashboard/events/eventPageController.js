@@ -14,29 +14,9 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
-eventPageModule.service('fileUpload', ['$http', function ($http) {
-	//Upoad Image to server
-    this.uploadFileToUrl = function(file, uploadUrl,eventPk,nickname){
-        var fd = new FormData();
-		fd.append('image', file);
-		fd.append('event', eventPk);
-		fd.append('nickname',nickname)
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .then(function successCallback(response){
-			console.log(response.data);
-		},
-		function errorCallback(response){
-			console.log(response.data);
-		});
-        
-    }
-}]);
 
 
-eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http', function($scope,fileUpload, $http){
+eventPageModule.controller("eventPageController", ['$scope','$http', function($scope, $http){
 	
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -92,9 +72,29 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
         	
 		$scope.uploadFile = function(){
 			var file = $scope.myFile;
-			//console.log('file is ' ); console.dir(file);
+			console.log('file is ' ); console.dir(file);
 			var uploadUrl = "https://photosharingapp-staging.appspot.com/api/upload_image/";
-			fileUpload.uploadFileToUrl(file, uploadUrl, $scope.eventPk, $scope.nickname);
+			var fd = new FormData();
+			fd.append('image', file);
+			fd.append('event', $scope.eventPk);
+			fd.append('nickname',$scope.nickname)
+			$http.post(uploadUrl, fd, {
+				transformRequest: angular.identity,
+				headers: {'Content-Type': undefined}
+			})
+			.then(function successCallback(response){
+				$scope.photos.push({
+					URL: response.data.image,
+					likes : response.data.likes,
+					date : response.data.uploaded_at,
+					uploadedBy:response.data.nickname,
+					pk:	response.data.pk,
+				})
+				console.log(response.data);
+			},
+			function errorCallback(response){
+				console.log(response.data);
+			});
 		};
 
 	
