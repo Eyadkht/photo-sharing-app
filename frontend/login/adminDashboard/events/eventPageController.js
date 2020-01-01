@@ -15,6 +15,7 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
 }]);
 
 eventPageModule.service('fileUpload', ['$http', function ($http) {
+	//Upoad Image to server
     this.uploadFileToUrl = function(file, uploadUrl,eventPk,nickname){
         var fd = new FormData();
 		fd.append('image', file);
@@ -77,7 +78,8 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 							URL: response.data.event_images.objects[i].image,
 							likes : response.data.event_images.objects[i].likes,
 							date : response.data.event_images.objects[i].uploaded_at,
-							uploadedBy:response.data.event_images.objects[i].nickname	
+							uploadedBy:response.data.event_images.objects[i].nickname,
+							pk:	response.data.event_images.objects[i].pk,
 						})
 					}
 				}
