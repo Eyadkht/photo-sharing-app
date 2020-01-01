@@ -146,7 +146,30 @@ eventPageModule.controller("eventPageController", ['$scope','$http', function($s
 	// This method updates the like count in the database containing the row representing the liked picture
 	$scope.sendLike = function()
 	{
-		alert("You liked picture " + $scope.currentFullscreenPhoto);
+		console.log($scope.photos[$scope.currentFullscreenPhoto].pk);
+		
+		$http({
+			method: 'PUT',
+			url: 'https://photosharingapp-staging.appspot.com/api/interact_media/',
+			data: {
+				"image_id": $scope.photos[$scope.currentFullscreenPhoto].pk
+			}
+		}).then(function successCallback(response) {
+
+			if (response.status == 200) {
+				$scope.photos[$scope.currentFullscreenPhoto].likes+=1;
+				$scope.fullscreenlikes=$scope.photos[$scope.currentFullscreenPhoto].likes;
+				console.log($scope.photos[$scope.currentFullscreenPhoto].likes);
+			}
+			else {
+				console.log(response.data);
+				alert(response.data);
+			}
+
+		}, function errorCallback(response) {
+		});
+
+
 	}
 
 	// This function changes the fullscreen photo on display, depending on which direction the user is browsing	
