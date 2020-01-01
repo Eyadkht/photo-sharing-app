@@ -57,8 +57,9 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 		description: ""
 	};
 
+	// Initiate variable 
 	$scope.nickname ="";	 	
-
+	$scope.photos = [];
 	// Get URL_KEY:
 	$scope.url_key=window.location.search.substring(2)
 	// Get event details and images 	
@@ -69,45 +70,31 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 				$scope.eventDetails.name = response.data.name;
 				$scope.eventDetails.location= response.data.location;
 				$scope.eventPk=response.data.pk;
-                
-                
-                // this callback will be called asynchronously
-		        // when the response is available
-		        // change to next url 
+				console.log(response.data)
+				if((response.data.event_images.objects.length!=0)){
+					for( var i =0; i< response.data.event_images.objects.length; i++){
+						$scope.photos.push({
+							URL: response.data.event_images.objects[i].image,
+							likes : response.data.event_images.objects[i].likes,
+							date : response.data.event_images.objects[i].uploaded_at,
+							uploadedBy:response.data.event_images.objects[i].nickname	
+						})
+					}
+				}
+				console.log($scope.photos)
+
 		        
 		    }, function errorCallback(response) {
-		        // called asynchronously if an error occurs
-		        // or server returns response with an error status.
+
             });
         	
 		$scope.uploadFile = function(){
 			var file = $scope.myFile;
-			console.log('file is ' ); console.dir(file);
+			//console.log('file is ' ); console.dir(file);
 			var uploadUrl = "https://photosharingapp-staging.appspot.com/api/upload_image/";
 			fileUpload.uploadFileToUrl(file, uploadUrl, $scope.eventPk, $scope.nickname);
 		};
 
-
-	
-	$scope.photos =
-	[
-		{
-			uploadedBy: "John",
-			date: "31-12-2019",
-			description: "This is a new years eve party, etc ...",
-			URL: "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?cs=srgb&dl=altitude-clouds-cold-417173.jpg&fm=jpg"},
-		 {
-			uploadedBy: "David",
-			date: "25-12-2019",
-			description: "This is a Christmas party, etc ...",
-			URL: "https://media-live.jmldirect.com/catalog/product/cache/207e23213cf636ccdef205098cf3c8a3/t/r/tree_dazzler_01_1.jpg"},
-		 
-		 {
-			uploadedBy: "Craig",
-			date: "20-06-2020",
-			description: "This is a summer event, etc ...",
-			URL: "https://news.images.itv.com/image/file/2067939/stream_img.jpg"}
-	];
 	
 	// This method should retrieve event details from the backend database
 	$scope.retrieveEventDetails = function()
@@ -125,9 +112,8 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 		// Assigning URL, date, description, and author of selected image to the fullscreen image text
 		$scope.fullscreenPhotoURL = $scope.photos[photoNumber].URL;
 		$scope.fullscreenDate = $scope.photos[photoNumber].date;
-		$scope.fullscreenDescription = $scope.photos[photoNumber].description;
 		$scope.fullscreenUploadedBy = $scope.photos[photoNumber].uploadedBy;
-		
+		$scope.fullscreenlikes=$scope.photos[photoNumber].likes;
 		// Recording which image is in fullscreen (for later when the user clicks left and right arrows)
 		$scope.currentFullscreenPhoto = photoNumber;
 
@@ -167,12 +153,11 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 		if(leftOrRight == $scope.RIGHT && $scope.currentFullscreenPhoto < $scope.photos.length-1)
 		{
 			$scope.currentFullscreenPhoto = $scope.currentFullscreenPhoto + 1;
-			
 			// Assigning URL, date, description, and author of selected image to the fullscreen image text
 			$scope.fullscreenPhotoURL = $scope.photos[$scope.currentFullscreenPhoto].URL;
 			$scope.fullscreenDate = $scope.photos[$scope.currentFullscreenPhoto].date;
-			$scope.fullscreenDescription = $scope.photos[$scope.currentFullscreenPhoto].description;
 			$scope.fullscreenUploadedBy = $scope.photos[$scope.currentFullscreenPhoto].uploadedBy;
+			$scope.fullscreenlikes=$scope.photos[$scope.currentFullscreenPhoto].likes;
 		}
 		if(leftOrRight == $scope.LEFT && $scope.currentFullscreenPhoto > 0)
 		{
@@ -181,8 +166,8 @@ eventPageModule.controller("eventPageController", ['$scope','fileUpload','$http'
 			// Assigning URL, date, description, and author of selected image to the fullscreen image text
 			$scope.fullscreenPhotoURL = $scope.photos[$scope.currentFullscreenPhoto].URL;
 			$scope.fullscreenDate = $scope.photos[$scope.currentFullscreenPhoto].date;
-			$scope.fullscreenDescription = $scope.photos[$scope.currentFullscreenPhoto].description;
 			$scope.fullscreenUploadedBy = $scope.photos[$scope.currentFullscreenPhoto].uploadedBy;
+			$scope.fullscreenlikes=$scope.photos[$scope.currentFullscreenPhoto].likes;
 		}
 	}
 
