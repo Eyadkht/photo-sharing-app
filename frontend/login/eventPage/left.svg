@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg" version="1.1">
-
-<circle cx="30" cy="30" r="30" fill="black" fill-opacity="0.5" />
-<rect x="20" y="27" width="30" height="4" fill="#f0f0f0" transform="rotate(45, 20, 27)" />
-<rect x="17" y="30" width="30" height="4" fill="#f0f0f0" transform="rotate(-45, 17, 30)"/>
-
-</svg>

@@ -30,7 +30,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		$scope.EditeventName = $scope.eventName;
 
 	}, function errorCallback(response) {
-		alert(response.data)
+		alert(response.data["detail"])
 		console.log(response.data)
 	});
 

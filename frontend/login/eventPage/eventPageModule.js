@@ -1,1 +1,0 @@
-var eventPageModule = angular.module("eventPageModule", []);
