@@ -9,6 +9,7 @@
   "author": "rei",
   "license": "ISC",
   "dependencies": {
+    "angular-jwt": "^0.1.11",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "gcs-signed-urls": "^1.0.4",

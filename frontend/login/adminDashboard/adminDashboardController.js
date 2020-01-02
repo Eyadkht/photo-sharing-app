@@ -1,38 +1,92 @@
-adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', '$window', 'jwtHelper', function ($scope, $http, $cookies, $window, jwtHelper) {
 
 	$scope.title = "Your Events";
-	$scope.deleteEventID=0;
-	
+	$scope.deleteEventID = 0;
+
 
 	console.log("In dashboard controller");
 	var auth = "Bearer " + $cookies.get('Authorization')
 	console.log(auth)
-	// GET all events created by user
-	$http({
-		method: 'GET',
-		url: 'https://photosharingapp-staging.appspot.com/api/events/',
-		headers: {
-			'Authorization': auth
-		}
-	}).then(function successCallback(response) {
-		$scope.events = [];
-		if ((response.data.length != 0)) {
-			for (var i = 0; i < response.data.length; i++) {
-				$scope.events.push({
-					name: response.data[i].name,
-					description: response.data[i].description,
-					pk: response.data[i].pk,
-					url_key: response.data[i].url_key
-				});
-			}
-		}
-		// Set Default Value for changing events
-		$scope.EditeventName = $scope.eventName;
+	var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
 
-	}, function errorCallback(response) {
-		alert(response.data["detail"])
-		console.log(response.data)
-	});
+	if (bool) {
+		console.log(bool)
+		$http({
+			method: 'POST',
+			url: 'https://photosharingapp-staging.appspot.com/api/token/refresh/',
+			data: {
+				"refresh": $cookies.get('Refresh'),
+			}
+		}).then(function successCallback(response) {
+
+			$cookies.put('Authorization', response.data.access);
+			console.log(response.data);
+
+			// GET all events created by user with the refresh token
+			$http({
+				method: 'GET',
+				url: 'https://photosharingapp-staging.appspot.com/api/events/',
+				headers: {
+					'Authorization': auth
+				}
+			}).then(function successCallback(response) {
+				$scope.events = [];
+				if ((response.data.length != 0)) {
+					for (var i = 0; i < response.data.length; i++) {
+						$scope.events.push({
+							name: response.data[i].name,
+							description: response.data[i].description,
+							pk: response.data[i].pk,
+							url_key: response.data[i].url_key
+						});
+					}
+				}
+				// Set Default Value for changing events
+				$scope.EditeventName = $scope.eventName;
+
+			}, function errorCallback(response) {
+				alert(response.data["detail"])
+				console.log(response.data)
+			});
+
+
+		}, function errorCallback(response) {
+			// Check for unique username and email
+			alert(response.data)
+		});
+	}
+	else {
+		// GET all events created by user
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/events/',
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			$scope.events = [];
+			if ((response.data.length != 0)) {
+				for (var i = 0; i < response.data.length; i++) {
+					$scope.events.push({
+						name: response.data[i].name,
+						description: response.data[i].description,
+						pk: response.data[i].pk,
+						url_key: response.data[i].url_key
+					});
+				}
+			}
+			// Set Default Value for changing events
+			$scope.EditeventName = $scope.eventName;
+
+		}, function errorCallback(response) {
+			alert(response.data["detail"])
+			console.log(response.data)
+		});
+
+	}
+
+
+
 
 
 
@@ -166,9 +220,9 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	}
 
-	$scope.getEventID = function (eventID){
+	$scope.getEventID = function (eventID) {
 		console.log(eventID)
-		$scope.deleteEventID=eventID;
+		$scope.deleteEventID = eventID;
 	}
 
 	$scope.deleteEvent = function () {
@@ -184,29 +238,29 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			//Display deleted event
 			for (var i in $scope.events) {
 				if ($scope.events[i].pk == $scope.events[$scope.deleteEventID].pk) {
-					$scope.events.splice(i,1);
+					$scope.events.splice(i, 1);
 				}
 			}
-		
+
 		}, function errorCallback(response) {
 			console.log(response)
 			alert(response.data)
 		});
 	}
 
-// Simple Function for showing the logout button
-$scope.showLogout = function () {
-	document.getElementById('logoutButton').style.display = "block";
-}
+	// Simple Function for showing the logout button
+	$scope.showLogout = function () {
+		document.getElementById('logoutButton').style.display = "block";
+	}
 
-$scope.logout = function () {
-	$window.location.href = '../';
-	//document.getElementById('logoutButton').style.display = "none";
-}
+	$scope.logout = function () {
+		$window.location.href = '../';
+		//document.getElementById('logoutButton').style.display = "none";
+	}
 
 
-$scope.eventlink = function (event) {
-	console.log(event.url_key)
-	$window.location.href = './events?=' + event.url_key;
-}
+	$scope.eventlink = function (event) {
+		console.log(event.url_key)
+		$window.location.href = './events?=' + event.url_key;
+	}
 }]);

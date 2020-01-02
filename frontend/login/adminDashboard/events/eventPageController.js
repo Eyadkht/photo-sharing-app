@@ -18,7 +18,7 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
 
 
 
-eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies', function ($scope, $http, $cookies) {
+eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',  function ($scope, $http, $cookies) {
 
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
