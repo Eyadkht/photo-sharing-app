@@ -236,25 +236,30 @@ eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',
 		});
 	}
 
-	$scope.deleteImage= function ($index) {
+	$scope.getImageID = function ($index){
+		$scope.deleteEventID=$index;
+	}
+
+	$scope.deleteImage= function () {
 		// GET all events created by user
 		if(auth){
 		$http({
 			method: 'DELETE',
-			url: 'https://photosharingapp-staging.appspot.com/api/delete_image/' + $scope.photos[$index].pk,
+			url: 'https://photosharingapp-staging.appspot.com/api/delete_image/' + $scope.photos[$scope.deleteEventID].pk,
 			headers: {
 				'Authorization': auth
 			}
 		}).then(function successCallback(response) {
 			//Display deleted image
 			for (var i in $scope.photos) {
-				if ($scope.photos[i].pk == $scope.photos[$index].pk) {
+				if ($scope.photos[i].pk == $scope.photos[$scope.deleteEventID].pk) {
 					$scope.photos.splice(i,1);
 				}
 			}
 		
 		}, function errorCallback(response) {
-			console.log(response)
+			console.log(response.data)
+			alert(response.data)
 		});
 	}
 	else{

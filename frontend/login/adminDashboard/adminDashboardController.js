@@ -1,7 +1,7 @@
 adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 
 	$scope.title = "Your Events";
-
+	$scope.deleteEventID=0;
 	
 
 	console.log("In dashboard controller");
@@ -73,7 +73,9 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				//alert('Event created successfully');
 				$scope.events.push({
 					name: $scope.eventName,
-					description: $scope.eventDescription
+					description: $scope.eventDescription,
+					pk: response.data.pk,
+					url_key: response.data.url_key
 				});
 				console.log($scope.events)
 
@@ -101,6 +103,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		console.log(event.url_key)
 		console.log(window.location.href)
 		var qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=' + event.url_key + '&size=500x500'
+		console.log(qr_url)
 		// Gemerate QR code
 		$http({
 			method: 'GET',
@@ -163,25 +166,31 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	}
 
-	$scope.deleteEvent = function (eventID) {
+	$scope.getEventID = function (eventID){
+		console.log(eventID)
+		$scope.deleteEventID=eventID;
+	}
+
+	$scope.deleteEvent = function () {
+		console.log($scope.events[$scope.deleteEventID].pk)
 		// GET all events created by user
 		$http({
 			method: 'DELETE',
-			url: 'https://photosharingapp-staging.appspot.com/api/events/' + $scope.events[eventID].pk,
+			url: 'https://photosharingapp-staging.appspot.com/api/events/' + $scope.events[$scope.deleteEventID].pk,
 			headers: {
 				'Authorization': auth
 			}
 		}).then(function successCallback(response) {
 			//Display deleted event
 			for (var i in $scope.events) {
-				if ($scope.events[i].pk == $scope.events[eventID].pk) {
+				if ($scope.events[i].pk == $scope.events[$scope.deleteEventID].pk) {
 					$scope.events.splice(i,1);
 				}
 			}
-			console.log($scope.events)
 		
 		}, function errorCallback(response) {
 			console.log(response)
+			alert(response.data)
 		});
 	}
 
