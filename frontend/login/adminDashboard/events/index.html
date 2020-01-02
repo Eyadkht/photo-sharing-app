@@ -23,7 +23,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
-	<script src="/jszip.js"></script>
 
 
 	<title>Event Page</title>
@@ -80,14 +79,15 @@
 					<input type="file" file-model="myFile" accept=".png, .jpg, .jpeg" />
 					<button ng-click="uploadFile()">Upload</button>
 				<button ng-click="sortImage()">Sort by Likes</button>
-				<button ng-click="downloadAll()">Download All</button>
+				<!-- <button ng-click="downloadAll()">Download All</button> -->
 			</div>
 		</div>
 
 		<div id="photoSection">
 			<div class="photoGrid col-sm-3 col-md-3 col-xs-6" ng-repeat="photo in photos" id="photo$index">
 				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
-				<button ng-click="download($index)">Download</button>
+				<button ng-click="downloadImage($index)">Download</button>
+				<button ng-click="deleteImage($index)">Delete</button>
 			</div>
 		</div>
 

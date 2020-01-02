@@ -46,6 +46,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		$scope.EditeventPin = $scope.events[eventID].pin;
 		document.getElementById('eventName').value = $scope.events[eventID].name;
 		document.getElementById('eventDate').value = $scope.events[eventID].date;
+		console.log($scope.events[eventID].date);
 		document.getElementById('eventIsActive').checked = $scope.events[eventID].active;
 		document.getElementById('eventPin').value = $scope.events[eventID].pin;
 		document.getElementById('eventDescription').value = $scope.events[eventID].description;
