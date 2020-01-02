@@ -96,10 +96,12 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 					$window.location.href = './adminDashboard';
 				}
 				else {
+					
 					console.log(response.data)
 				}
 
 			}, function errorCallback(response) {
+				alert(response.data["detail"])
 				console.log(response.data)
 			});
 		}
