@@ -1,1 +1,1 @@
-var eventPageModule = angular.module("eventPageModule", []);
+var eventPageModule = angular.module("eventPageModule", ['ngCookies']);

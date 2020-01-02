@@ -18,7 +18,7 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
 
 
 
-eventPageModule.controller("eventPageController", ['$scope', '$http', function ($scope, $http) {
+eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',  function ($scope, $http, $cookies) {
 
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -45,6 +45,12 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', function (
 	$scope.photos = [];
 	// Get URL_KEY:
 	$scope.url_key = window.location.search.substring(2)
+	// Check whether is admin 
+	if($cookies.get('Authorization')){
+		var auth = "Bearer " + $cookies.get('Authorization')
+	}
+	
+	
 	// Get event details and images 	
 	$http({
 		method: 'GET',
@@ -93,6 +99,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', function (
 					pk: response.data.pk,
 				})
 				console.log(response.data);
+				alert("Your picture has been uplaoded successfully.")
 			},
 				function errorCallback(response) {
 					console.log(response.data);
@@ -208,7 +215,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', function (
 	}
 
 	// Download individual picture 
-	$scope.download = function ($index) {
+	$scope.downloadImage = function ($index) {
 		console.log($index)
 		console.log($scope.photos[$index].URL)
 		// Get event details and images 	
@@ -227,7 +234,37 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', function (
 		}, function errorCallback(response) {
 			alert(response.data)
 		});
+	}
 
+	$scope.getImageID = function ($index){
+		$scope.deleteEventID=$index;
+	}
+
+	$scope.deleteImage= function () {
+		// GET all events created by user
+		if(auth){
+		$http({
+			method: 'DELETE',
+			url: 'https://photosharingapp-staging.appspot.com/api/delete_image/' + $scope.photos[$scope.deleteEventID].pk,
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			//Display deleted image
+			for (var i in $scope.photos) {
+				if ($scope.photos[i].pk == $scope.photos[$scope.deleteEventID].pk) {
+					$scope.photos.splice(i,1);
+				}
+			}
+		
+		}, function errorCallback(response) {
+			console.log(response.data)
+			alert(response.data)
+		});
+	}
+	else{
+		alert("Only Event Organisers can delete photos.")
+	}
 	}
 
 

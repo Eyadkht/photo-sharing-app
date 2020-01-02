@@ -19,9 +19,10 @@
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
 	<!-- AngularJs -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/angular-jwt@0.1.11/dist/angular-jwt.min.js"></script>
 
 	<title>PhotoShare</title>
 	<link rel="stylesheet" href="adminDashboardStyle.css" />
@@ -67,8 +68,8 @@
 								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent"
 									ng-click="displayEvent($index)">
 									<img src="edit.svg" />Edit</div>
-								<div class="col-md-3 col-xs-3" ng-click="deleteEvent($index)"><img
-										src="delete.png" />Delete</div>
+								<div class="col-md-3 col-xs-3"  data-toggle="modal" data-target="#confirmDelete"><img
+										src="delete.png" ng-click="getEventID($index)"/>Delete</div>
 							</div>
 							<button type="button" class="btn btn-lg btn-block btn-outline-primary"
 								ng-click="eventlink(event)">Go to Event Page</button>
@@ -83,7 +84,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Create Event</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<div class="modal-body">
@@ -122,6 +123,24 @@
 		</div>
 	</div>
 
+
+	<div id="confirmDelete" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h6>
+						Confirm Delete Event?
+					</h6>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						ng-click="deleteEvent()">Yes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 
 
 	<div id="editEvent" class="modal">
