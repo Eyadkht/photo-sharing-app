@@ -41,7 +41,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',
 		};
 
 	// Initiate variable 
-	$scope.nickname = "";
+	$scope.nickname = " ";
 	$scope.photos = [];
 	// Get URL_KEY:
 	$scope.url_key = window.location.search.substring(2)

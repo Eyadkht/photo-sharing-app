@@ -3,14 +3,20 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.title = "Your Events";
 	$scope.deleteEventID = 0;
 
+	//Initialise Variable
+	$scope.username="";
+	$scope.email=" ";
+	$scope.password=" ";
+
+	console.log($scope.username)
 
 	console.log("In dashboard controller");
 	var auth = "Bearer " + $cookies.get('Authorization')
-	console.log(auth)
 	var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
 
 	if (bool) {
-		console.log(bool)
+		$cookies.remove('Authorization'); 
+		console.log("In Change cookies")
 		$http({
 			method: 'POST',
 			url: 'https://photosharingapp-staging.appspot.com/api/token/refresh/',
@@ -18,10 +24,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				"refresh": $cookies.get('Refresh'),
 			}
 		}).then(function successCallback(response) {
-
 			$cookies.put('Authorization', response.data.access);
-			console.log(response.data);
-
+			auth = "Bearer " + $cookies.get('Authorization')
+			var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+			$scope.userID=tokenPayload.user_id;
+			console.log("Before getting events from new cookies")
 			// GET all events created by user with the refresh token
 			$http({
 				method: 'GET',
@@ -56,6 +63,8 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		});
 	}
 	else {
+		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+		$scope.userID=tokenPayload.user_id;
 		// GET all events created by user
 		$http({
 			method: 'GET',
@@ -87,7 +96,32 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 
 
+	$scope.editUserDetails = function (){
+		$http({
+			method: 'PUT',
+			url: 'https://photosharingapp-staging.appspot.com/api/users/'+$scope.userID,
+			headers: {
+				'Authorization': auth
+			},
+			data: {
+				"username": $scope.username,
+				"email": $scope.email,
+				"password": $scope.password
+			}
+		}).then(function successCallback(response) {
 
+			if (response.status == 200) {
+				console.log(response.data)
+			}
+			else {
+				console.log(response.data);
+				alert(response.data);
+			}
+
+		}, function errorCallback(response) {
+		});
+
+	}
 
 
 	// This function is used to display the information of a specified event in the edit pane
@@ -155,13 +189,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	$scope.showQR = function (event) {
 		console.log(event.url_key)
-		console.log(window.location.href)
-		var qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=' + event.url_key + '&size=500x500'
-		console.log(qr_url)
+		$scope.qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=' + event.url_key + '&size=500x500'
 		// Gemerate QR code
 		$http({
 			method: 'GET',
-			url: qr_url
+			url: $scope.qr_url
 		}).then(function successCallback(response) {
 			console.log(response)
 		}, function errorCallback(response) {
