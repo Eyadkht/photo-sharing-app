@@ -8,6 +8,58 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.email = "";
 	$scope.password = "";
 
+	var self = this;
+
+	self.getDetails = function (){
+		console.log('After',$cookies.get('Authorization'));
+		var auth = "Bearer " + $cookies.get('Authorization')
+		console.log(auth)
+		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+		$scope.userID = tokenPayload.user_id;
+		// GET all events created by user with the refresh token
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/events/',
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			$scope.events = [];
+			if ((response.data.length != 0)) {
+				for (var i = 0; i < response.data.length; i++) {
+					$scope.events.push({
+						name: response.data[i].name,
+						description: response.data[i].description,
+						pk: response.data[i].pk,
+						url_key: response.data[i].url_key
+					});
+				}
+			}
+			// Set Default Value for changing events
+			$scope.EditeventName = $scope.eventName;
+	
+		}, function errorCallback(response) {
+			alert(response.data["detail"])
+			console.log(response.data)
+		});
+	
+		// GET username from decrypted token
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			$scope.username = response.data.username;
+			$scope.email = response.data.email;
+	
+		}, function errorCallback(response) {
+			alert(response.data["detail"])
+			console.log(response.data)
+		});
+	}
+
 	var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
 	console.log($cookies.get('Authorization'))
 	if (bool) {
@@ -22,61 +74,19 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		}).then(function successCallback(response) {
 			console.log("Successfully getting a new token");
 			$cookies.put('Authorization', response.data.access);
+			self.getDetails();
 		}, function errorCallback(response) {
 			console.log("Fail to change refresh token")
 			// Check for unique username and email
 			alert(response.data)
 		});
 	}
+	else{
+		self.getDetails();
+	}
 
 
-	console.log('After',$cookies.get('Authorization'));
-	var auth = "Bearer " + $cookies.get('Authorization')
-	console.log(auth)
-	var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
-	$scope.userID = tokenPayload.user_id;
-	// GET all events created by user with the refresh token
-	$http({
-		method: 'GET',
-		url: 'https://photosharingapp-staging.appspot.com/api/events/',
-		headers: {
-			'Authorization': auth
-		}
-	}).then(function successCallback(response) {
-		$scope.events = [];
-		if ((response.data.length != 0)) {
-			for (var i = 0; i < response.data.length; i++) {
-				$scope.events.push({
-					name: response.data[i].name,
-					description: response.data[i].description,
-					pk: response.data[i].pk,
-					url_key: response.data[i].url_key
-				});
-			}
-		}
-		// Set Default Value for changing events
-		$scope.EditeventName = $scope.eventName;
 
-	}, function errorCallback(response) {
-		alert(response.data["detail"])
-		console.log(response.data)
-	});
-
-	// GET username from decrypted token
-	$http({
-		method: 'GET',
-		url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
-		headers: {
-			'Authorization': auth
-		}
-	}).then(function successCallback(response) {
-		$scope.username = response.data.username;
-		$scope.email = response.data.email;
-
-	}, function errorCallback(response) {
-		alert(response.data["detail"])
-		console.log(response.data)
-	});
 
 
 	$scope.editUserDetails = function () {

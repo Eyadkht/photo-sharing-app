@@ -40,6 +40,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			description: ""
 		};
 
+	var self = this;	
 	// Initiate variable 
 	$scope.nickname = " ";
 	$scope.photos = [];
@@ -60,10 +61,27 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 				}
 			}).then(function successCallback(response) {
 				$cookies.put('Authorization', response.data.access);
+				self.setAdminNickname();
+			},function errorCallback(response) {
+				console.log("Fail to change refresh token")
+				// Check for unique username and email
+				alert(response.data)
 			});
 		}
-		
+		else{
+			self.setAdminNickname();
+		}
+	}
+	else {
+		$scope.admin = 'false';
+		// Show modal to get public's username 
+		$(document).ready(function () {
+			$('#myModal').modal('show');
+		});
+	}
 
+	self.setAdminNickname = function (){
+		
 		var auth = "Bearer " + $cookies.get('Authorization')
 		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
 		$scope.userID = tokenPayload.user_id;
@@ -82,13 +100,6 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			console.log(response.data)
 		});
 
-	}
-	else {
-		$scope.admin = 'false';
-		// Show modal to get public's username 
-		$(document).ready(function () {
-			$('#myModal').modal('show');
-		});
 	}
 
 
@@ -113,10 +124,8 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			}
 		}
 		console.log($scope.photos)
-
-
 	}, function errorCallback(response) {
-
+		alert(response.data);
 	});
 
 	$scope.uploadFile = function () {
