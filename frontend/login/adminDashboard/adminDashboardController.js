@@ -7,13 +7,12 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.username = "";
 	$scope.email = "";
 	$scope.password = "";
-
+	$scope.auth="";
 	var self = this;
 
 	self.getDetails = function (){
 		console.log('After',$cookies.get('Authorization'));
-		var auth = "Bearer " + $cookies.get('Authorization')
-		console.log(auth)
+		$scope.auth = "Bearer " + $cookies.get('Authorization')
 		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
 		$scope.userID = tokenPayload.user_id;
 		// GET all events created by user with the refresh token
@@ -21,7 +20,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'GET',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/',
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			}
 		}).then(function successCallback(response) {
 			$scope.events = [];
@@ -48,7 +47,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'GET',
 			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			}
 		}).then(function successCallback(response) {
 			$scope.username = response.data.username;
@@ -94,7 +93,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'PUT',
 			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			},
 			data: {
 				"username": $scope.username,
@@ -143,7 +142,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'POST',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/',
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			},
 			data: {
 				"name": $scope.eventName,
@@ -210,7 +209,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'PUT',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/' + $scope.EditeventPk,
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			},
 			data: {
 				"name": $scope.EditeventName,
@@ -262,7 +261,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			method: 'DELETE',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/' + $scope.events[$scope.deleteEventID].pk,
 			headers: {
-				'Authorization': auth
+				'Authorization': $scope.auth
 			}
 		}).then(function successCallback(response) {
 			//Display deleted event

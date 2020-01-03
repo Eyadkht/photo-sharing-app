@@ -45,7 +45,29 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	$scope.nickname = " ";
 	$scope.photos = [];
 	// Get URL_KEY:
-	$scope.url_key = window.location.search.substring(2)
+	$scope.url_key = window.location.search.substring(2);
+	
+	self.setAdminNickname = function (){
+		
+		var auth = "Bearer " + $cookies.get('Authorization')
+		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+		$scope.userID = tokenPayload.user_id;
+		//Set nickname as admin
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			$scope.nickname = response.data.username;
+			console.log($scope.nickname)
+		}, function errorCallback(response) {
+			alert(response.data["detail"])
+			console.log(response.data)
+		});
+
+	}
 	// Check whether is admin 
 	if ($cookies.get('Authorization')) {
 		$scope.admin = 'true';
@@ -80,27 +102,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		});
 	}
 
-	self.setAdminNickname = function (){
-		
-		var auth = "Bearer " + $cookies.get('Authorization')
-		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
-		$scope.userID = tokenPayload.user_id;
-		//Set nickname as admin
-		$http({
-			method: 'GET',
-			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
-			headers: {
-				'Authorization': auth
-			}
-		}).then(function successCallback(response) {
-			$scope.nickname = response.data.username;
-			console.log($scope.nickname)
-		}, function errorCallback(response) {
-			alert(response.data["detail"])
-			console.log(response.data)
-		});
 
-	}
 
 
 	// Get event details and images 	
