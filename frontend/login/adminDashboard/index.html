@@ -33,7 +33,8 @@
 <body ng-app="adminDashboardModule" ng-controller="adminDashboardController" id="application">
 	<nav class="navbar navbar-expand-lg navbar-light bg-white	">
 		<h5 class="my-0 mr-md-auto font-weight-normal"> Admin Dashboard</h5>
-		<button class="btn btn-outline-primary" ng-click="logout()"> Logout </button>
+		<button class="btn btn-outline-primary" ng-click="editUserDetails()"> Edit my details </button>
+		<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
 	</nav>
 
 
@@ -117,7 +118,7 @@
 				</div>
 				<div class="modal-body">
 					<img id="qr"
-						src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:8080/adminDashboard/events/?=f3804e33b6e25fe0c6d8f50b6a3478d55664b6d6db0ff9808644c1eeeef97cfe&size=500x500" />
+					ng-src="{{qr_url}}" />
 				</div>
 			</div>
 		</div>
