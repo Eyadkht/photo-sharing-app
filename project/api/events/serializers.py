@@ -14,7 +14,7 @@ class EventSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Event
-        fields = ['pk','name', 'description','url_key','password','is_password_protected']
+        fields = ['pk','name', 'description','url_key','password','is_password_protected','location','date']
         read_only_fields = ('url_key',)
 
 class CustomPagination(LimitOffsetPagination):
@@ -40,7 +40,7 @@ class EventPublicUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['pk','name', 'description','url_key','is_password_protected','event_images']
+        fields = ['pk','name', 'description','url_key','is_password_protected','event_images','location','date']
 
     def paginated_tracks(self, obj):
         images = Image.objects.filter(event=obj)

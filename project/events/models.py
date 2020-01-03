@@ -15,10 +15,13 @@ def event_image_directory_path(instance, filename):
 class Event(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(verbose_name="Description")
+    location = models.TextField(verbose_name="Location",blank=True)
+    date = models.DateField()
     organizer = models.ForeignKey('users.user', on_delete=models.CASCADE, related_name='user_events')
     url_key = models.CharField(max_length=256,blank=True)
     is_password_protected = models.BooleanField(default=False)
     password = models.CharField(max_length=256,blank=True,default="")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

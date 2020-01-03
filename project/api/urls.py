@@ -1,11 +1,11 @@
 from django.urls import path
-from project.api.users.views import SnippetDetail, SnippetList
+from project.api.users.views import UserDetail, UserList
 from project.api.events.views import EventDetail, EventList, EventDetailPublicUser
 from project.api.events.views import ImageUploadView, ImageDeleteView, MediaInteraction
 
 urlpatterns = [
-    path('users/', SnippetList.as_view()),
-    path('users/<int:pk>', SnippetDetail.as_view()),
+    path('users/', UserList.as_view()),
+    path('users/<int:pk>', UserDetail.as_view()),
     path('event/<str:url_key>',EventDetailPublicUser.as_view()),
     path('events/', EventList.as_view()),
     path('events/<int:pk>', EventDetail.as_view()),
