@@ -16,7 +16,7 @@ class Event(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(verbose_name="Description")
     location = models.TextField(verbose_name="Location",blank=True)
-    date = models.DateField()
+    date = models.CharField(max_length=256,blank=True,default="")
     organizer = models.ForeignKey('users.user', on_delete=models.CASCADE, related_name='user_events')
     url_key = models.CharField(max_length=256,blank=True)
     is_password_protected = models.BooleanField(default=False)
