@@ -1,133 +1,279 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
 
+
+
 <head>
+
 	<meta charset="UTF-8">
+
 	<meta name="viewport" content="width=device-width, initial-scale=1" ,shrink-to-fit=no">
 
 
+
+
+
 	<!-- Bootstrap CSS -->
+
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+
 		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+
 		crossorigin="anonymous"></script>
+
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+
 		crossorigin="anonymous"></script>
+
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+
 		crossorigin="anonymous"></script>
+
 	<!-- AngularJs -->
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+
 	<script src="https://cdn.jsdelivr.net/npm/jszip@3.2.2/dist/jszip.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/angular-jwt@0.1.11/dist/angular-jwt.min.js"></script>
+
+
 
 	<title>Event Page</title>
+
 	<script src="eventPageModule.js"></script>
+
 	<script src="eventPageController.js"></script>
+
 	<link rel="stylesheet" href="eventPageStyle.css" />
+
 </head>
 
+
+
 <body>
+
 	<div class="container" ng-app="eventPageModule" ng-controller="eventPageController" id="application">
-		<nav class="navbar navbar-expand-lg navbar-light bg-white" ng-show="admin== 'true'">
-			<h5 class="my-0 mr-md-auto font-weight-normal"> Admin Dashboard</h5>
-			<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
-		</nav>
 
 		<h1 id="title">{{eventDetails.name}}</h1>
 
 
 
+
+
+
+
 		<div id="myModal" class="modal">
+
 			<div class="modal-dialog">
+
 				<div class="modal-content">
+
 					<div class="modal-header">
+
 						<h4 class="modal-title">Welcome to {{eventDetails.name}} EventPage</h4>
+
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
+
 					</div>
+
 					<div class="modal-body">
 
+
+
 						<form class="text-center p-5">
+
 							<h6> Create a nickname for people to recognise you. </h6>
+
 							<input type="text" ng-model="nickname" class="form-control mb-1" placeholder="Nickname"
+
 								required /><br>
+
 							<button type="button" class="btn btn-lg btn-block btn-outline-secondary"
+
 								data-dismiss="modal">Ok</button>
+
 						</form>
+
 					</div>
+
 				</div>
+
 			</div>
+
 		</div>
+
+
+
+
+
+		<script type="text/javascript">
+
+			$(document).ready(function () {
+
+				$('#myModal').modal('show');
+
+			});
+
+		</script>
+
+
 
 
 
 		<div id="infoSection" class="col-md-12 col-sm-12">
+
+			<div class="row">
 			<div class="col-md-6 col-sm-6">
+
 				Info:<br>
+
 				<textarea rows="5" cols="35">
+
 {{eventDetails.location}}
+
 {{eventDetails.date}}
+
 {{eventDetails.description}}
+
 				</textarea>
+
 			</div>
+
 			<div id="uploadDownload" class="col-md-6 col-sm-6">
-					<input type="file" file-model="myFile" accept=".png, .jpg, .jpeg" />
-					<button ng-click="uploadFile()">Upload</button>
-				<button ng-click="sortImage()">Sort by Likes</button>
+
+					<h5><b>Upload Photos:</h5></b> </br><input type="file" file-model="myFile" accept=".png, .jpg, .jpeg" /><br/><br/>
+
+					<button ng-click="uploadFile()" class="btn btn-primary ">Upload</button>
+
+				<button ng-click="sortImage()" class="btn btn-primary ">Sort by Likes</button>
+
 				<!-- <button ng-click="downloadAll()">Download All</button> -->
+
 			</div>
+			</div>
+
 		</div>
 
+
+
 		<div id="photoSection">
+			<div class="row">
+
 			<div class="photoGrid col-sm-3 col-md-3 col-xs-6" ng-repeat="photo in photos" id="photo$index">
+
 				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
+				
+				<div class="row">
+
 				<button ng-click="downloadImage($index)">Download</button>
-				<button ng-click="getImageID($index)" ng-show="admin=='true' " data-toggle="modal" data-target="#confirmDelete">Delete</button>
+
+				<button ng-click="getImageID($index)" data-toggle="modal" data-target="#confirmDelete">Delete</button>
+				<div >
+					Uploaded By: {{fullscreenUploadedBy}}<br>
+					Date: {{fullscreenDate}}<br>
+					Likes {{fullscreenlikes}}
+				</div>
+				</div>
 				
 			</div>
+
+				
+
+			</div>
+
 		</div>
+
+
+
+
 
 
 
 		<div id="fullscreenPhotoContainer">
+
 			<img id="closeFullscreen" ng-click="closeFullscreen()" src="close.svg" />
-			<img id="infoFullscreen" ng-click="showInfo()" src="info.svg">
-			<img id="likeButton" ng-click="sendLike()" src="like.png">
+
+			<img id="infoFullscreen" ng-click="showInfo()" src="info.svg" />
+
+			<img id="likeButton" ng-click="sendLike()" src="like.png" />
+
 			<img ng-src="{{fullscreenPhotoURL}}" id="fullscreenPhoto" />
+
 			<img id="left" src="left.svg" ng-click="switchPhoto(0)" />
+
 			<img id="right" src="right.svg" ng-click="switchPhoto(1)" />
+
 			<div id="photoInfo">
+
 				Uploaded By: {{fullscreenUploadedBy}}<br>
+
 				Date: {{fullscreenDate}}<br>
+
 				Likes {{fullscreenlikes}}
+
 				<div id="closeInfo" ng-click="closeInfo()">OK</div>
+
 			</div>
+
 		</div>
+
+
 
 		<div id="confirmDelete" class="modal">
+
 			<div class="modal-dialog">
+
 				<div class="modal-content">
+
 					<div class="modal-body">
+
 						<h6>
+
 							Confirm Delete Photos?
+
 						</h6>
+
 					</div>
+
 					<div class="modal-footer">
+
 						<button type="button" class="btn btn-default" data-dismiss="modal"
+
 							ng-click="deleteImage()">Yes</button>
+
 						<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+
 					</div>
+
 					
+
 				</div>
+
 			</div>
+
 		</div>
 
+
+
 	</div>
+
 </body>
+
+
 
 </html>
