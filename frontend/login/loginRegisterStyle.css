@@ -1,4 +1,5 @@
 
+
 #loginForm
 {
 	display: block
@@ -139,3 +140,13 @@
       color: #777;
     }
   }
+
+#invalidPassword
+{
+	background-color: #ff5454;
+	padding: 9px;
+	border-radius: 14px;
+	margin-top: 5px;
+	color: white;
+	display: none
+}
