@@ -4,18 +4,14 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.deleteEventID = 0;
 
 	//Initialise Variable
-	$scope.username="";
-	$scope.email=" ";
-	$scope.password=" ";
+	$scope.username = "";
+	$scope.email = "";
+	$scope.password = "";
 
-	console.log($scope.username)
-
-	console.log("In dashboard controller");
-	var auth = "Bearer " + $cookies.get('Authorization')
 	var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
-
+	console.log($cookies.get('Authorization'))
 	if (bool) {
-		$cookies.remove('Authorization'); 
+		$cookies.remove('Authorization');
 		console.log("In Change cookies")
 		$http({
 			method: 'POST',
@@ -24,82 +20,69 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				"refresh": $cookies.get('Refresh'),
 			}
 		}).then(function successCallback(response) {
+			console.log("Successfully getting a new token");
 			$cookies.put('Authorization', response.data.access);
-			auth = "Bearer " + $cookies.get('Authorization')
-			var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
-			$scope.userID=tokenPayload.user_id;
-			console.log("Before getting events from new cookies")
-			// GET all events created by user with the refresh token
-			$http({
-				method: 'GET',
-				url: 'https://photosharingapp-staging.appspot.com/api/events/',
-				headers: {
-					'Authorization': auth
-				}
-			}).then(function successCallback(response) {
-				$scope.events = [];
-				if ((response.data.length != 0)) {
-					for (var i = 0; i < response.data.length; i++) {
-						$scope.events.push({
-							name: response.data[i].name,
-							description: response.data[i].description,
-							pk: response.data[i].pk,
-							url_key: response.data[i].url_key
-						});
-					}
-				}
-				// Set Default Value for changing events
-				$scope.EditeventName = $scope.eventName;
-
-			}, function errorCallback(response) {
-				alert(response.data["detail"])
-				console.log(response.data)
-			});
-
-
 		}, function errorCallback(response) {
+			console.log("Fail to change refresh token")
 			// Check for unique username and email
 			alert(response.data)
 		});
 	}
-	else {
-		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
-		$scope.userID=tokenPayload.user_id;
-		// GET all events created by user
-		$http({
-			method: 'GET',
-			url: 'https://photosharingapp-staging.appspot.com/api/events/',
-			headers: {
-				'Authorization': auth
+
+
+	console.log('After',$cookies.get('Authorization'));
+	var auth = "Bearer " + $cookies.get('Authorization')
+	console.log(auth)
+	var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+	$scope.userID = tokenPayload.user_id;
+	// GET all events created by user with the refresh token
+	$http({
+		method: 'GET',
+		url: 'https://photosharingapp-staging.appspot.com/api/events/',
+		headers: {
+			'Authorization': auth
+		}
+	}).then(function successCallback(response) {
+		$scope.events = [];
+		if ((response.data.length != 0)) {
+			for (var i = 0; i < response.data.length; i++) {
+				$scope.events.push({
+					name: response.data[i].name,
+					description: response.data[i].description,
+					pk: response.data[i].pk,
+					url_key: response.data[i].url_key
+				});
 			}
-		}).then(function successCallback(response) {
-			$scope.events = [];
-			if ((response.data.length != 0)) {
-				for (var i = 0; i < response.data.length; i++) {
-					$scope.events.push({
-						name: response.data[i].name,
-						description: response.data[i].description,
-						pk: response.data[i].pk,
-						url_key: response.data[i].url_key
-					});
-				}
-			}
-			// Set Default Value for changing events
-			$scope.EditeventName = $scope.eventName;
+		}
+		// Set Default Value for changing events
+		$scope.EditeventName = $scope.eventName;
 
-		}, function errorCallback(response) {
-			alert(response.data["detail"])
-			console.log(response.data)
-		});
+	}, function errorCallback(response) {
+		alert(response.data["detail"])
+		console.log(response.data)
+	});
 
-	}
+	// GET username from decrypted token
+	$http({
+		method: 'GET',
+		url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
+		headers: {
+			'Authorization': auth
+		}
+	}).then(function successCallback(response) {
+		$scope.username = response.data.username;
+		$scope.email = response.data.email;
+
+	}, function errorCallback(response) {
+		alert(response.data["detail"])
+		console.log(response.data)
+	});
 
 
-
-	$scope.editUserDetails = function (){
+	$scope.editUserDetails = function () {
 		$http({
 			method: 'PUT',
-			url: 'https://photosharingapp-staging.appspot.com/api/users/'+$scope.userID,
+			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
 			headers: {
 				'Authorization': auth
 			},
@@ -109,6 +92,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				"password": $scope.password
 			}
 		}).then(function successCallback(response) {
+			console.log(response.data)
 
 			if (response.status == 200) {
 				console.log(response.data)
@@ -143,6 +127,8 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	// This function will make a request to the back end to create a new event
 	$scope.createEvent = function () {
+		// Change to format Jan 01 2020
+		$scope.date = $scope.eventDate.toString().substr(4, 11);
 		$http({
 			method: 'POST',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/',
@@ -152,6 +138,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			data: {
 				"name": $scope.eventName,
 				"description": $scope.eventDescription,
+				"date": $scope.date,
 				"password": $scope.eventPin
 			}
 		}).then(function successCallback(response) {
@@ -162,6 +149,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				$scope.events.push({
 					name: $scope.eventName,
 					description: $scope.eventDescription,
+					date: $scope.date,
 					pk: response.data.pk,
 					url_key: response.data.url_key
 				});

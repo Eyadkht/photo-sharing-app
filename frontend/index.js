@@ -12,11 +12,11 @@ app.set('port', process.env.PORT || 3000);
 
 
 // Not using 
-var CloudStorage = require("gcs-signed-urls")("./google-services-private-key.pem"
-  , "photosharing-261420@appspot.gserviceaccount.com"
-  , "photo_app_bucket");
-CloudStorage.cors("cloud.xml")
-var uploadVars = CloudStorage.uploadRequest("example.jpeg", "key" + Date.now()); // TODO: maybe provide configurable parameters instead of hardcoding them
+//var CloudStorage = require("gcs-signed-urls")("./google-services-private-key.pem"
+//  , "photosharing-261420@appspot.gserviceaccount.com"
+//  , "photo_app_bucket");
+// CloudStorage.cors("cloud.xml")
+// var uploadVars = CloudStorage.uploadRequest("example.jpeg", "key" + Date.now());
 
 //Organiser Login
 app.use('/', express.static('login'));

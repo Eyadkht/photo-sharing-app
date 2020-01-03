@@ -18,7 +18,7 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
 
 
 
-eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',  function ($scope, $http, $cookies) {
+eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies','jwtHelper', '$window', function ($scope, $http, $cookies, jwtHelper, $window) {
 
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -46,11 +46,52 @@ eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',
 	// Get URL_KEY:
 	$scope.url_key = window.location.search.substring(2)
 	// Check whether is admin 
-	if($cookies.get('Authorization')){
+	if ($cookies.get('Authorization')) {
+		$scope.admin = 'true';
+		// Check token expiration and renew if expired
+		var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
+		if (bool){
+			$cookies.remove('Authorization'); 
+			$http({
+				method: 'POST',
+				url: 'https://photosharingapp-staging.appspot.com/api/token/refresh/',
+				data: {
+					"refresh": $cookies.get('Refresh'),
+				}
+			}).then(function successCallback(response) {
+				$cookies.put('Authorization', response.data.access);
+			});
+		}
+		
+
 		var auth = "Bearer " + $cookies.get('Authorization')
+		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
+		$scope.userID = tokenPayload.user_id;
+		//Set nickname as admin
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/users/' + $scope.userID,
+			headers: {
+				'Authorization': auth
+			}
+		}).then(function successCallback(response) {
+			$scope.nickname = response.data.username;
+			console.log($scope.nickname)
+		}, function errorCallback(response) {
+			alert(response.data["detail"])
+			console.log(response.data)
+		});
+
 	}
-	
-	
+	else {
+		$scope.admin = 'false';
+		// Show modal to get public's username 
+		$(document).ready(function () {
+			$('#myModal').modal('show');
+		});
+	}
+
+
 	// Get event details and images 	
 	$http({
 		method: 'GET',
@@ -236,38 +277,36 @@ eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',
 		});
 	}
 
-	$scope.getImageID = function ($index){
-		$scope.deleteEventID=$index;
+	$scope.getImageID = function ($index) {
+		$scope.deleteEventID = $index;
 	}
 
-	$scope.deleteImage= function () {
+	$scope.deleteImage = function () {
 		// GET all events created by user
-		if(auth){
-		$http({
-			method: 'DELETE',
-			url: 'https://photosharingapp-staging.appspot.com/api/delete_image/' + $scope.photos[$scope.deleteEventID].pk,
-			headers: {
-				'Authorization': auth
-			}
-		}).then(function successCallback(response) {
-			//Display deleted image
-			for (var i in $scope.photos) {
-				if ($scope.photos[i].pk == $scope.photos[$scope.deleteEventID].pk) {
-					$scope.photos.splice(i,1);
+		if (auth) {
+			$http({
+				method: 'DELETE',
+				url: 'https://photosharingapp-staging.appspot.com/api/delete_image/' + $scope.photos[$scope.deleteEventID].pk,
+				headers: {
+					'Authorization': auth
 				}
-			}
-		
-		}, function errorCallback(response) {
-			console.log(response.data)
-			alert(response.data)
-		});
-	}
-	else{
-		alert("Only Event Organisers can delete photos.")
-	}
-	}
+			}).then(function successCallback(response) {
+				//Display deleted image
+				for (var i in $scope.photos) {
+					if ($scope.photos[i].pk == $scope.photos[$scope.deleteEventID].pk) {
+						$scope.photos.splice(i, 1);
+					}
+				}
 
-
+			}, function errorCallback(response) {
+				console.log(response.data)
+				alert(response.data)
+			});
+		}
+		else {
+			alert("Only Event Organisers can delete photos.")
+		}
+	}
 
 	// This function changes the fullscreen photo on display, depending on which direction the user is browsing	
 	$scope.switchPhoto = function (leftOrRight) {
@@ -288,6 +327,10 @@ eventPageModule.controller("eventPageController", ['$scope', '$http','$cookies',
 			$scope.fullscreenUploadedBy = $scope.photos[$scope.currentFullscreenPhoto].uploadedBy;
 			$scope.fullscreenlikes = $scope.photos[$scope.currentFullscreenPhoto].likes;
 		}
+	}
+
+	$scope.logout = function () {
+		$window.location.href = '../../';
 	}
 
 }]);

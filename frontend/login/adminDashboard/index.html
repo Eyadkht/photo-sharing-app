@@ -33,7 +33,8 @@
 <body ng-app="adminDashboardModule" ng-controller="adminDashboardController" id="application">
 	<nav class="navbar navbar-expand-lg navbar-light bg-white	">
 		<h5 class="my-0 mr-md-auto font-weight-normal"> Admin Dashboard</h5>
-		<button class="btn btn-outline-primary" ng-click="editUserDetails()"> Edit my details </button>
+		<button class="btn btn-outline-primary" data-toggle="modal"
+		data-target="#editMyDetails" > Edit my details </button>
 		<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
 	</nav>
 
@@ -43,7 +44,7 @@
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
 		<div class="container">
-			<h1 class="display-3">Welcome to PhotoShare!</h1>
+			<h1 class="display-3">Welcome to PhotoShare, {{username}}!</h1>
 			<p>Need a description here.</p>
 			<button class="btn btn-primary btn-lg" id="createEventButton" data-toggle="modal"
 				data-target="#createEvent">Create Event</button>
@@ -61,7 +62,8 @@
 						<h4 class="my-0 font-weight-normal">{{event.name}}</h4>
 					</div>
 					<div class="card-body">
-						<h7 class="card-title pricing-card-title">{{event.description}}</h1>
+						<h7 class="card-title pricing-card-title">{{event.description}}</h7><br>
+						<h7 class="card-title pricing-card-title">{{event.date}}</h7>
 							<div class="row" style="padding-bottom: 10px;">
 								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage"
 									ng-click="showQR(event)"><img src="qr.png" /> Show QR
@@ -80,6 +82,31 @@
 	</div>
 
 
+	<div id="editMyDetails" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit My Details</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<div class="modal-body">
+					<form class="form-signin">
+						<input type="text" ng-model="username" class="form-control mb-1" placeholder="username"
+							required /><br>
+							<input type="email" id="email" class="form-control" placeholder="email" autofocus ng-model="email" /><br>
+						<input type="password" ng-model="password" class="form-control mb-1"
+							placeholder="password" /><br>
+						<input type="password" ng-model="password" class="form-control mb-1"
+							placeholder="Confirm Password" /><br>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="createEventSubmit" ng-click="editUserDetails()">Edit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="createEvent" class="modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -92,7 +119,7 @@
 					<form class="text-center p-5">
 						<input type="text" ng-model="eventName" class="form-control mb-1" placeholder="Name"
 							required /><br>
-						<input type="date" ng-model="eventDate" class="form-control mb-1" placeholder="Date" /><br>
+						<input type="date" ng-model="eventDate" class="form-control mb-1" placeholder="Date" required /><br>
 						<input type="number" ng-model="eventPin" class="form-control mb-1"
 							placeholder="Pin (Digits Only)" /><br>
 						<input type="text" ng-model="eventDescription" class="form-control mb-1"

@@ -24,6 +24,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jszip@3.2.2/dist/jszip.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/angular-jwt@0.1.11/dist/angular-jwt.min.js"></script>
 
 	<title>Event Page</title>
 	<script src="eventPageModule.js"></script>
@@ -33,6 +34,11 @@
 
 <body>
 	<div class="container" ng-app="eventPageModule" ng-controller="eventPageController" id="application">
+		<nav class="navbar navbar-expand-lg navbar-light bg-white" ng-show="admin== 'true'">
+			<h5 class="my-0 mr-md-auto font-weight-normal"> Admin Dashboard</h5>
+			<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
+		</nav>
+
 		<h1 id="title">{{eventDetails.name}}</h1>
 
 
@@ -59,12 +65,6 @@
 		</div>
 
 
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$('#myModal').modal('show');
-			});
-		</script>
-
 
 		<div id="infoSection" class="col-md-12 col-sm-12">
 			<div class="col-md-6 col-sm-6">
@@ -87,7 +87,7 @@
 			<div class="photoGrid col-sm-3 col-md-3 col-xs-6" ng-repeat="photo in photos" id="photo$index">
 				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
 				<button ng-click="downloadImage($index)">Download</button>
-				<button ng-click="getImageID($index)" data-toggle="modal" data-target="#confirmDelete">Delete</button>
+				<button ng-click="getImageID($index)" ng-show="admin=='true' " data-toggle="modal" data-target="#confirmDelete">Delete</button>
 				
 			</div>
 		</div>
