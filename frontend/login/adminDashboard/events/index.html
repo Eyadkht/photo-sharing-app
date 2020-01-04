@@ -112,17 +112,27 @@
 
 	<div id="photoSection">
 		<div class="row">
-			<div class="photoGrid col-sm-3 col-md-3 col-xs-6"
+			<div class="photoGrid col-sm-2 col-md-2 col-xs-4"
 				ng-repeat="photo in photos | startFrom:currentPage*pageSize | limitTo:pageSize" id="photo$index">
-				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
+				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" class="col-md-offset-1"/>
 				<div class="row">
-					<button ng-click="downloadImage($index)">Download</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<button ng-click="downloadImage($index)" class="col-sm-3 col-md-3 col-xs-6 btn btn-success btn-sm">Download</button>
+					&nbsp;&nbsp;
 					<button ng-click="getImageID($index)" data-toggle="modal"
-						data-target="#confirmDelete">Delete</button>
+						data-target="#confirmDelete" class="col-sm-3 col-md-3 col-xs-6 btn btn-danger btn-sm" >Delete</button>
+						&nbsp;
+					<img ng-click="sendLike()" src="like.png" class="col-sm-3 col-md-3 col-xs-6" width=30 height=25/>
 					<div>
+<<<<<<< HEAD
 						Uploaded By: {{photo.uploadedBy}}<br>
 						Date: {{photo.date | date:'yyyy-MM-dd' }}<br>
 						Likes {{photo.likes}}
+=======
+						&nbsp;&nbsp;&nbsp;&nbsp;Uploaded By: {{photo.uploadedBy}}<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;Date: {{photo.date}}<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;Likes {{photo.likes}}
+>>>>>>> 3ec22f6f92ea862cd9c889f5ac2676a105704386
 					</div>
 				</div>
 			</div>
