@@ -16,9 +16,17 @@ eventPageModule.directive('fileModel', ['$parse', function ($parse) {
 	};
 }]);
 
+eventPageModule.filter('startFrom', function () {
+	console.log('At filter')
+	return function (input, start) {
+		start = +start; //parse to int
+		return input.slice(start);
+	}
+});
 
 
-eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies','jwtHelper', '$window', function ($scope, $http, $cookies, jwtHelper, $window) {
+
+eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies', 'jwtHelper', '$window', function ($scope, $http, $cookies, jwtHelper, $window) {
 
 	// These variables hold information relevant to the fullscreen functionality
 	$scope.fullscreenPhotoURL = "";
@@ -30,6 +38,12 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	// These constants represent which direction the user is browsing the photos in (for the switchPhoto function)
 	$scope.LEFT = 0;
 	$scope.RIGHT = 1;
+	// Pagination
+	$scope.pageSize = 10;
+	$scope.currentPage = 0;
+	$scope.numberOfPages = function () {
+		return Math.ceil($scope.photos.length / $scope.pageSize);
+	}
 
 	// Preloading event details and photos with dummy data
 	$scope.eventDetails =
@@ -40,15 +54,14 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			description: ""
 		};
 
-	var self = this;	
-	// Initiate variable 
+	var self = this;
+	// Initiate variable
 	$scope.nickname = " ";
-	$scope.photos = [];
 	// Get URL_KEY:
 	$scope.url_key = window.location.search.substring(2);
 
-	self.setAdminNickname = function (){
-		
+	self.setAdminNickname = function () {
+
 		var auth = "Bearer " + $cookies.get('Authorization')
 		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
 		$scope.userID = tokenPayload.user_id;
@@ -68,13 +81,13 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		});
 
 	}
-	// Check whether is admin 
+	// Check whether is admin
 	if ($cookies.get('Authorization')) {
 		$scope.admin = 'true';
 		// Check token expiration and renew if expired
 		var bool = jwtHelper.isTokenExpired($cookies.get('Authorization'));
-		if (bool){
-			$cookies.remove('Authorization'); 
+		if (bool) {
+			$cookies.remove('Authorization');
 			$http({
 				method: 'POST',
 				url: 'https://photosharingapp-staging.appspot.com/api/token/refresh/',
@@ -84,56 +97,98 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			}).then(function successCallback(response) {
 				$cookies.put('Authorization', response.data.access);
 				self.setAdminNickname();
-			},function errorCallback(response) {
+			}, function errorCallback(response) {
 				console.log("Fail to change refresh token")
 				// Check for unique username and email
 				alert(response.data)
 			});
 		}
-		else{
+		else {
 			self.setAdminNickname();
 		}
 	}
 	else {
 		$scope.admin = 'false';
-		// Show modal to get public's username 
+		// Show modal to get public's username
 		$(document).ready(function () {
 			$('#myModal').modal('show');
 		});
 	}
 
 
+	// This method should retrieve details of each photo from the backend database and store them in the photos object array
+	this.getImages = function () {
+		$scope.photos = [];
 
-
-	// Get event details and images 	
-	$http({
-		method: 'GET',
-		url: 'https://photosharingapp-staging.appspot.com/api/event/' + $scope.url_key
-	}).then(function successCallback(response) {
-		$scope.eventDetails.name = response.data.name;
-		$scope.eventDetails.location = response.data.location;
-		$scope.eventDetails.description = response.data.description;
-		$scope.eventPk = response.data.pk;
-		$scope.totalUser=[];
-		console.log(response.data)
-		if ((response.data.event_images.objects.length != 0)) {
-			for (var i = 0; i < response.data.event_images.objects.length; i++) {
-				$scope.photos.push({
-					URL: response.data.event_images.objects[i].image,
-					likes: response.data.event_images.objects[i].likes,
-					date: response.data.event_images.objects[i].uploaded_at,
-					uploadedBy: response.data.event_images.objects[i].nickname,
-					pk: response.data.event_images.objects[i].pk,
-				})
-				$scope.totalUser.push(response.data.event_images.objects[i].nickname)
+		$http({
+			method: 'GET',
+			url: 'https://photosharingapp-staging.appspot.com/api/event/' + $scope.url_key
+		}).then(function successCallback(response) {
+			$scope.eventDetails.name = response.data.name;
+			$scope.eventDetails.location = response.data.location;
+			$scope.eventDetails.description = response.data.description;
+			$scope.eventPk = response.data.pk;
+			$scope.totalUser = [];
+			console.log(response.data)
+			if ((response.data.event_images.objects.length != 0)) {
+				for (var i = 0; i < response.data.event_images.objects.length; i++) {
+					$scope.photos.push({
+						URL: response.data.event_images.objects[i].image,
+						likes: response.data.event_images.objects[i].likes,
+						date: response.data.event_images.objects[i].uploaded_at,
+						uploadedBy: response.data.event_images.objects[i].nickname,
+						pk: response.data.event_images.objects[i].pk,
+					})
+					$scope.totalUser.push(response.data.event_images.objects[i].nickname)
+				}
 			}
-		}
-		console.log($scope.photos)
-		$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
-		console.log($scope.distinctUserCount);
-	}, function errorCallback(response) {
-		alert(response.data);
-	});
+			// Get more pictures if >10
+			if (response.data.event_images.meta.next != null) {
+				self.getMoreImages(response.data.event_images.meta.next)
+			}
+			else {
+				// Count Distint Users
+				$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
+				console.log($scope.photos)
+			}
+
+		}, function errorCallback(response) {
+			alert(response.data);
+		});
+	}
+
+	self.getImages();
+
+
+	this.getMoreImages = function (nextImageUrl) {
+		$http({
+			method: 'GET',
+			url: nextImageUrl
+		}).then(function successCallback(response) {
+			if ((response.data.event_images.objects.length != 0)) {
+				for (var i = 0; i < response.data.event_images.objects.length; i++) {
+					$scope.photos.push({
+						URL: response.data.event_images.objects[i].image,
+						likes: response.data.event_images.objects[i].likes,
+						date: response.data.event_images.objects[i].uploaded_at,
+						uploadedBy: response.data.event_images.objects[i].nickname,
+						pk: response.data.event_images.objects[i].pk,
+					})
+					$scope.totalUser.push(response.data.event_images.objects[i].nickname)
+				}
+			}
+			if (response.data.event_images.meta.next != null) {
+				self.getMoreImages(response.data.event_images.meta.next)
+			}
+			else {
+				// Count Distint Users
+				$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
+				console.log($scope.photos)
+			}
+		}, function errorCallback(response) {
+			alert(response.data)
+		});
+	}
 
 	$scope.uploadFile = function () {
 		var file = $scope.myFile;
@@ -163,14 +218,6 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 				});
 	};
 
-
-	// This method should retrieve event details from the backend database
-	$scope.retrieveEventDetails = function () {
-	}
-
-	// This method should retrieve details of each photo from the backend database and store them in the photos object array
-	$scope.retrievePhotos = function () {
-	}
 
 	// This function makes a specified photo fill the screen when the user clicks on it
 	$scope.fullscreenPhoto = function (photoNumber) {
@@ -216,33 +263,8 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	}
 
 	$scope.sortImage = function () {
-		$scope.photos = [];
-		// Get event details and images 	
-		$http({
-			method: 'GET',
-			url: 'https://photosharingapp-staging.appspot.com/api/event/' + $scope.url_key
-		}).then(function successCallback(response) {
-			$scope.eventDetails.name = response.data.name;
-			$scope.eventDetails.location = response.data.location;
-			$scope.eventPk = response.data.pk;
-			console.log(response.data)
-			if ((response.data.event_images.objects.length != 0)) {
-				for (var i = 0; i < response.data.event_images.objects.length; i++) {
-					$scope.photos.push({
-						URL: response.data.event_images.objects[i].image,
-						likes: response.data.event_images.objects[i].likes,
-						date: response.data.event_images.objects[i].uploaded_at,
-						uploadedBy: response.data.event_images.objects[i].nickname,
-						pk: response.data.event_images.objects[i].pk,
-					})
-				}
-			}
-			console.log($scope.photos)
-
-
-		}, function errorCallback(response) {
-
-		});
+		$scope.currentPage = 0;
+		self.getImages();
 	}
 
 	// This method updates the like count in the database containing the row representing the liked picture
@@ -271,11 +293,11 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		});
 	}
 
-	// Download individual picture 
+	// Download individual picture
 	$scope.downloadImage = function ($index) {
 		console.log($index)
 		console.log($scope.photos[$index].URL)
-		// Get event details and images 	
+		// Get event details and images
 		$http({
 			method: 'GET',
 			url: $scope.photos[$index].URL,
@@ -324,7 +346,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		}
 	}
 
-	// This function changes the fullscreen photo on display, depending on which direction the user is browsing	
+	// This function changes the fullscreen photo on display, depending on which direction the user is browsing
 	$scope.switchPhoto = function (leftOrRight) {
 		if (leftOrRight == $scope.RIGHT && $scope.currentFullscreenPhoto < $scope.photos.length - 1) {
 			$scope.currentFullscreenPhoto = $scope.currentFullscreenPhoto + 1;
