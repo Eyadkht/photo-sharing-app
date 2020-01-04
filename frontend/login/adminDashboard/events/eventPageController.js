@@ -34,15 +34,20 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	$scope.fullscreenDescription = "";
 	$scope.fullscreenUploadedBy = "";
 	$scope.currentFullscreenPhoto = 0;
-
 	// These constants represent which direction the user is browsing the photos in (for the switchPhoto function)
 	$scope.LEFT = 0;
 	$scope.RIGHT = 1;
 	// Pagination
 	$scope.pageSize = 10;
 	$scope.currentPage = 0;
+	$scope.photos=[];
 	$scope.numberOfPages = function () {
-		return Math.ceil($scope.photos.length / $scope.pageSize);
+		if(Math.ceil($scope.photos.length / $scope.pageSize)==0){
+			return 1;
+		}
+		else{
+			return Math.ceil($scope.photos.length / $scope.pageSize);
+		}
 	}
 
 	// Preloading event details and photos with dummy data
@@ -58,7 +63,8 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	// Initiate variable
 	$scope.nickname = " ";
 	// Get URL_KEY:
-	$scope.url_key = window.location.search.substring(2);
+	$scope.url_key = window.location.search.substring(3);
+
 
 	self.setAdminNickname = function () {
 
@@ -157,8 +163,6 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		});
 	}
 
-	self.getImages();
-
 
 	this.getMoreImages = function (nextImageUrl) {
 		$http({
@@ -189,6 +193,94 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			alert(response.data)
 		});
 	}
+
+	this.getMoreImagesWithPin = function (nextImageUrl) {
+		$http({
+			method: 'POST',
+			url: nextImageUrl,		
+			data: {
+				"password": $scope.pin,
+			}
+		}).then(function successCallback(response) {
+			if ((response.data.event_images.objects.length != 0)) {
+				for (var i = 0; i < response.data.event_images.objects.length; i++) {
+					$scope.photos.push({
+						URL: response.data.event_images.objects[i].image,
+						likes: response.data.event_images.objects[i].likes,
+						date: response.data.event_images.objects[i].uploaded_at,
+						uploadedBy: response.data.event_images.objects[i].nickname,
+						pk: response.data.event_images.objects[i].pk,
+					})
+					$scope.totalUser.push(response.data.event_images.objects[i].nickname)
+				}
+			}
+			if (response.data.event_images.meta.next != null) {
+				self.getMoreImagesWithPin(response.data.event_images.meta.next)
+			}
+			else {
+				// Count Distint Users
+				$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
+				console.log($scope.photos)
+			}
+		}, function errorCallback(response) {
+			alert(response.data)
+		});
+	}
+
+		// Check whether is a private event
+		if(window.location.search.substring(2,3)=='p'){
+			$(document).ready(function () {
+				$('#getPin').modal('show');
+			});
+
+		}
+		else{
+			self.getImages();
+		}
+	
+	$scope.getImagesWithPin = function (){
+		$scope.photos = [];
+
+		$http({
+			method: 'POST',
+			url: 'https://photosharingapp-staging.appspot.com/api/event/' + $scope.url_key,
+			data: {
+				"password": $scope.pin,
+			}
+		}).then(function successCallback(response) {
+			$scope.eventDetails.name = response.data.name;
+			$scope.eventDetails.location = response.data.location;
+			$scope.eventDetails.description = response.data.description;
+			$scope.eventPk = response.data.pk;
+			$scope.totalUser = [];
+			console.log(response.data)
+			if ((response.data.event_images.objects.length != 0)) {
+				for (var i = 0; i < response.data.event_images.objects.length; i++) {
+					$scope.photos.push({
+						URL: response.data.event_images.objects[i].image,
+						likes: response.data.event_images.objects[i].likes,
+						date: response.data.event_images.objects[i].uploaded_at,
+						uploadedBy: response.data.event_images.objects[i].nickname,
+						pk: response.data.event_images.objects[i].pk,
+					})
+					$scope.totalUser.push(response.data.event_images.objects[i].nickname)
+				}
+			}
+			// Get more pictures if >10
+			if (response.data.event_images.meta.next != null) {
+				self.getMoreImagesWithPin(response.data.event_images.meta.next)
+			}
+			else {
+				// Count Distint Users
+				$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
+				console.log($scope.photos)
+			}
+
+		}, function errorCallback(response) {
+			alert(response.data['detail']);
+		});
+	}
+
 
 	$scope.uploadFile = function () {
 		var file = $scope.myFile;
@@ -263,7 +355,13 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 
 	$scope.sortImage = function () {
 		$scope.currentPage = 0;
-		self.getImages();
+				// Check whether is a private event
+				if(window.location.search.substring(2,3)=='p'){
+					$scope.getImagesWithPin();
+				}
+				else{
+					self.getImages();
+				}
 	}
 
 	// This method updates the like count in the database containing the row representing the liked picture

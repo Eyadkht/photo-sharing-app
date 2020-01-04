@@ -7,11 +7,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 	$scope.username = "";
 	$scope.email = "";
 	$scope.password = "";
-	$scope.auth="";
+	$scope.auth = "";
 	var self = this;
 
-	self.getDetails = function (){
-		console.log('After',$cookies.get('Authorization'));
+	self.getDetails = function () {
+		console.log('After', $cookies.get('Authorization'));
 		$scope.auth = "Bearer " + $cookies.get('Authorization')
 		var tokenPayload = jwtHelper.decodeToken($cookies.get('Authorization'));
 		$scope.userID = tokenPayload.user_id;
@@ -30,18 +30,21 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 						name: response.data[i].name,
 						description: response.data[i].description,
 						pk: response.data[i].pk,
-						url_key: response.data[i].url_key
+						url_key: response.data[i].url_key,
+						location: response.data[i].location,
+						private: response.data[i].is_password_protected
 					});
 				}
 			}
 			// Set Default Value for changing events
 			$scope.EditeventName = $scope.eventName;
-	
+			console.log($scope.events)
+
 		}, function errorCallback(response) {
 			alert(response.data["detail"])
 			console.log(response.data)
 		});
-	
+
 		// GET username from decrypted token
 		$http({
 			method: 'GET',
@@ -52,7 +55,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		}).then(function successCallback(response) {
 			$scope.username = response.data.username;
 			$scope.email = response.data.email;
-	
+
 		}, function errorCallback(response) {
 			alert(response.data["detail"])
 			console.log(response.data)
@@ -80,7 +83,7 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			alert(response.data)
 		});
 	}
-	else{
+	else {
 		self.getDetails();
 	}
 
@@ -122,22 +125,19 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 		$scope.EditeventPk = $scope.events[eventID].pk;
 		// Set Default Value for changing events
 		$scope.EditeventName = $scope.events[eventID].name;
-		console.log($scope.EditeventName)
 		$scope.EditeventDescription = $scope.events[eventID].description;
+		$scope.EditeventLocation = $scope.events[eventID].location;
 		$scope.EditeventPin = $scope.events[eventID].pin;
-		document.getElementById('eventName').value = $scope.events[eventID].name;
-		document.getElementById('eventDate').value = $scope.events[eventID].date;
-		console.log($scope.events[eventID].date);
-		document.getElementById('eventIsActive').checked = $scope.events[eventID].active;
-		document.getElementById('eventPin').value = $scope.events[eventID].pin;
-		document.getElementById('eventDescription').value = $scope.events[eventID].description;
-		document.getElementById('eventLocation').value = $scope.events[eventID].location;
+		$scope.EditeventPrivate = $scope.events[eventID].private;
 	}
 
 	// This function will make a request to the back end to create a new event
 	$scope.createEvent = function () {
 		// Change to format Jan 01 2020
-		$scope.date = $scope.eventDate.toString().substr(4, 11);
+		if ($scope.eventDate != null) {
+			$scope.date = $scope.eventDate.toString().substr(4, 11);
+		}
+
 		$http({
 			method: 'POST',
 			url: 'https://photosharingapp-staging.appspot.com/api/events/',
@@ -148,7 +148,9 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 				"name": $scope.eventName,
 				"description": $scope.eventDescription,
 				"date": $scope.date,
-				"password": $scope.eventPin
+				"password": $scope.eventPin,
+				"location": $scope.eventLocation,
+				"is_password_protected": $scope.private,
 			}
 		}).then(function successCallback(response) {
 
@@ -159,6 +161,8 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 					name: $scope.eventName,
 					description: $scope.eventDescription,
 					date: $scope.date,
+					private: $scope.private,
+					location: $scope.eventLocation,
 					pk: response.data.pk,
 					url_key: response.data.url_key
 				});
@@ -172,11 +176,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 		}, function errorCallback(response) {
 			// Check for unique username and email
-			if (response.data.username) {
-				alert(response.data.username[0])
+			if (response.data.name) {
+				alert('Event name is required.')
 			}
-			else if (response.data.email) {
-				alert(response.data.email[0])
+			else if (response.data.description) {
+				alert('Event description is required.')
 			}
 			else {
 				console.log(response.data);
@@ -186,7 +190,13 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	$scope.showQR = function (event) {
 		console.log(event.url_key)
-		$scope.qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=' + event.url_key + '&size=500x500'
+		if(event.private){
+			$scope.qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=p' + event.url_key + '&size=500x500'
+
+		} 
+		else{
+			$scope.qr_url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + window.location.href + 'events/?=n' + event.url_key + '&size=500x500'
+		}
 		// Gemerate QR code
 		$http({
 			method: 'GET',
@@ -202,7 +212,6 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	// This function will make a request to the back end to modify a specific event
 	$scope.saveEvent = function () {
-		console.log($scope.EditeventName)
 
 
 		$http({
@@ -214,7 +223,8 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 			data: {
 				"name": $scope.EditeventName,
 				"description": $scope.EditeventDescription,
-				"password": $scope.EditeventPin
+				"password": $scope.EditeventPin,
+				"is_password_protected": $scope.EditeventPrivate,
 			}
 		}).then(function successCallback(response) {
 
@@ -290,6 +300,11 @@ adminDashboardModule.controller("adminDashboardController", ['$scope', '$http', 
 
 	$scope.eventlink = function (event) {
 		console.log(event.url_key)
-		$window.location.href = './events?=' + event.url_key;
+		if(event.private){
+			$window.location.href = './events?=p' + event.url_key;
+		}
+		else{
+			$window.location.href = './events?=n' + event.url_key;
+		}
 	}
 }]);

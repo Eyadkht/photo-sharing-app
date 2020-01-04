@@ -40,7 +40,26 @@
 		<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
 	</nav>
 
-
+	<div id="getPin" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">This is a private event.</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+	
+						<form class="text-center p-5">
+							<h6>Please enter the pin.</h6>
+							<input type="text" ng-model="pin" class="form-control mb-1" placeholder="Pin"
+								required /><br>
+							<button type="button" class="btn btn-lg btn-block btn-outline-secondary" ng-click="getImagesWithPin()"
+								data-dismiss="modal">Ok</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 	<div id="myModal" class="modal">
@@ -102,7 +121,7 @@
 						data-target="#confirmDelete">Delete</button>
 					<div>
 						Uploaded By: {{photo.uploadedBy}}<br>
-						Date: {{photo.date}}<br>
+						Date: {{photo.date | date:'yyyy-MM-dd' }}<br>
 						Likes {{photo.likes}}
 					</div>
 				</div>
@@ -110,7 +129,7 @@
 		</div>
 	</div>
 
-	<div class="container h-100">
+	<div class="container h-100" ng-show="photos.length>=8">
 			<div class="row h-100 justify-content-center align-items-center">
 		<button  class="btn btn-outline-primary" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
 			Previous

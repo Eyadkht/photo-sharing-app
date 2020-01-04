@@ -60,9 +60,11 @@
 				<div class="card mb-4 box-shadow">
 					<div class="card-header">
 						<h4 class="my-0 font-weight-normal">{{event.name}}</h4>
+						<h4 class="my-0 font-weight-normal" ng-show="event.private == true ">[Private]</h4>
 					</div>
 					<div class="card-body">
-						<h7 class="card-title pricing-card-title">{{event.description}}</h7><br>
+						<h7 class="card-title pricing-card-title">Description: {{event.description}}</h7><br>
+						<h7 class="card-title pricing-card-title">Location: {{event.location}}</h7><br>
 						<h7 class="card-title pricing-card-title">{{event.date}}</h7>
 							<div class="row" style="padding-bottom: 10px;">
 								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage"
@@ -126,7 +128,10 @@
 							placeholder="Description" required /><br>
 						<input type="text" ng-model="eventLocation" class="form-control mb-1"
 							placeholder="Location" /><br>
-						Active? <input type="checkbox" ng-model="eventIsActive" value="" /><br>
+							<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="defaultUnchecked" ng-model="private">
+									<label class="custom-control-label" for="defaultUnchecked">Private</label>
+								</div>
 						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
 							id="createEventSubmit" ng-click="createEvent()">Create</button>
 					</form>
@@ -190,7 +195,10 @@
 							placeholder="Description" required /><br>
 						<input type="text" ng-model="EditeventLocation" class="form-control mb-1"
 							placeholder="Location" /><br>
-						Active? <input type="checkbox" ng-model="EditeventIsActive" value="" /><br>
+							<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="defaultEditUnchecked" ng-model="EditeventPrivate">
+									<label class="custom-control-label" for="defaultEditUnchecked">Private</label>
+								</div>
 						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
 							id="EditEventSubmit" ng-click="saveEvent()">Edit</button>
 					</form>

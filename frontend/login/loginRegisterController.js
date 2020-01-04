@@ -40,6 +40,7 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 	$scope.login_username = "";
 	$scope.login_password = "";
 	$scope.togglePasswordInvalid='false';
+	$scope.wrongCredential ='false';
 	$scope.save = function (form) {
 
 		if ($scope.LoginOrRegister == $scope.REGISTER) {
@@ -50,6 +51,7 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 				$scope.togglePasswordInvalid='true';
 				return; }
 
+			$scope.togglePasswordInvalid='false';
 			//if (!$scope.contactForm.$valid) return;
 			console.log("Register User Details" + $scope.username);
 			$http({
@@ -84,7 +86,8 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 			});
 		}
 		else if ($scope.LoginOrRegister == $scope.LOGIN) {
-
+			
+			$scope.wrongCredential='false';
 			//if (!$scope.contactForm.$valid) return;
 			console.log("Login User Details" + $scope.login_username);
 			//
@@ -109,7 +112,8 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 				}
 
 			}, function errorCallback(response) {
-				alert(response.data["detail"])
+				$scope.wrongCredential='true';
+				//alert(response.data["detail"])
 				console.log(response.data)
 			});
 		}
