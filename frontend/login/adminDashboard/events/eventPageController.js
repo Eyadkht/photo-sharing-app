@@ -46,7 +46,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	$scope.photos = [];
 	// Get URL_KEY:
 	$scope.url_key = window.location.search.substring(2);
-	
+
 	self.setAdminNickname = function (){
 		
 		var auth = "Bearer " + $cookies.get('Authorization')
@@ -112,7 +112,9 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	}).then(function successCallback(response) {
 		$scope.eventDetails.name = response.data.name;
 		$scope.eventDetails.location = response.data.location;
+		$scope.eventDetails.description = response.data.description;
 		$scope.eventPk = response.data.pk;
+		$scope.totalUser=[];
 		console.log(response.data)
 		if ((response.data.event_images.objects.length != 0)) {
 			for (var i = 0; i < response.data.event_images.objects.length; i++) {
@@ -123,9 +125,12 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 					uploadedBy: response.data.event_images.objects[i].nickname,
 					pk: response.data.event_images.objects[i].pk,
 				})
+				$scope.totalUser.push(response.data.event_images.objects[i].nickname)
 			}
 		}
 		console.log($scope.photos)
+		$scope.distinctUserCount = [... new Set($scope.totalUser)].length;
+		console.log($scope.distinctUserCount);
 	}, function errorCallback(response) {
 		alert(response.data);
 	});
