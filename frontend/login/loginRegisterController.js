@@ -39,14 +39,17 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 
 	$scope.login_username = "";
 	$scope.login_password = "";
-
+	$scope.togglePasswordInvalid='false';
 	$scope.save = function (form) {
-		
+
 		if ($scope.LoginOrRegister == $scope.REGISTER) {
+
 			
 			// If the password is invalid then the form will not be submitted
-			if($scope.verifyPassword($scope.password) == false){ return; }
-			
+			if($scope.verifyPassword($scope.password) == false){ 
+				$scope.togglePasswordInvalid='true';
+				return; }
+
 			//if (!$scope.contactForm.$valid) return;
 			console.log("Register User Details" + $scope.username);
 			$http({
@@ -82,13 +85,9 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 		}
 		else if ($scope.LoginOrRegister == $scope.LOGIN) {
 
-			
-			// If the password is invalid then the form will not be submitted
-			if($scope.verifyPassword($scope.login_password) == false){ return; }
-			
 			//if (!$scope.contactForm.$valid) return;
 			console.log("Login User Details" + $scope.login_username);
-			// 
+			//
 			$http({
 				method: 'POST',
 				url: 'https://photosharingapp-staging.appspot.com/api/token/',
@@ -105,7 +104,7 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 					$window.location.href = './adminDashboard';
 				}
 				else {
-					
+
 					console.log(response.data)
 				}
 
@@ -115,30 +114,30 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 			});
 		}
 	}
-	
-	
+
+
 		// This function confirms whether or not a password is valid and displays an appropriate message if not
 	$scope.verifyPassword = function(password)
 	{
 		//This represents whether or not the given password is valid
 		var isValid = true;
-		
+
 		// If the password is less than 8 chars then it is invalid
 		if(password.length < 8){ isValid = false; }
-		
+
 		// If the password contains no digits then it is invalid
 		if(password.search(/\d+/g) == -1){ isValid = false; }
 
 		// If the password contains no letters then it is invalid
 		if(password.search(/[a-z]|[A-Z]/g) == -1){ isValid = false; }
-		
+
 		// The password cannot be obvious
 		if(password === "password123" || password === "123password"){ isValid = false; }
-		
+
 		// Displaying error message if the password is invalid
-		if(isValid == false){ document.getElementById('invalidPassword').style.display = "block"; }
-		else{ document.getElementById('invalidPassword').style.display = "none"; }
-		
+		//if(isValid == false){ document.getElementById('invalidPassword').style.display = "block"; }
+		//else{ document.getElementById('invalidPassword').style.display = "none"; }
+
 		return isValid;
 	}
 

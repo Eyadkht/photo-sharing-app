@@ -211,7 +211,6 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 					pk: response.data.pk,
 				})
 				console.log(response.data);
-				alert("Your picture has been uplaoded successfully.")
 			},
 				function errorCallback(response) {
 					console.log(response.data);
