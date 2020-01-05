@@ -365,9 +365,7 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 	}
 
 	// This method updates the like count in the database containing the row representing the liked picture
-	$scope.sendLike = function () {
-		console.log($scope.photos[$scope.currentFullscreenPhoto].pk);
-
+	$scope.sendLikeFullScreen = function () {
 		$http({
 			method: 'PUT',
 			url: 'https://photosharingapp-staging.appspot.com/api/interact_media/',
@@ -379,7 +377,6 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 			if (response.status == 200) {
 				$scope.photos[$scope.currentFullscreenPhoto].likes += 1;
 				$scope.fullscreenlikes = $scope.photos[$scope.currentFullscreenPhoto].likes;
-				console.log($scope.photos[$scope.currentFullscreenPhoto].likes);
 			}
 			else {
 				console.log(response.data);
@@ -389,6 +386,28 @@ eventPageModule.controller("eventPageController", ['$scope', '$http', '$cookies'
 		}, function errorCallback(response) {
 		});
 	}
+
+		// This method updates the like count in the database containing the row representing the liked picture
+		$scope.sendLike = function ($index) {
+			$http({
+				method: 'PUT',
+				url: 'https://photosharingapp-staging.appspot.com/api/interact_media/',
+				data: {
+					"image_id": $scope.photos[$index].pk
+				}
+			}).then(function successCallback(response) {
+	
+				if (response.status == 200) {
+					$scope.photos[$index].likes += 1;
+				}
+				else {
+					console.log(response.data);
+					alert(response.data);
+				}
+	
+			}, function errorCallback(response) {
+			});
+		}
 
 	// Download individual picture
 	$scope.downloadImage = function ($index) {

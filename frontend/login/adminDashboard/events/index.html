@@ -124,7 +124,7 @@
 					<button ng-click="getImageID($index)" data-toggle="modal"
 						data-target="#confirmDelete" class="col-sm-3 col-md-3 col-xs-6 btn btn-danger btn-sm" >Delete</button>
 						&nbsp;
-					<img ng-click="sendLike()" src="like.png" class="col-sm-3 col-md-3 col-xs-6" width=30 height=25/>
+					<img ng-click="sendLike($index)" src="like.png" class="col-sm-3 col-md-3 col-xs-6" width=25 height=25/>
 				</div>
 				<div class="row col-sm-9 col-md-9 col-xs-27">
 						Uploaded By: {{photo.uploadedBy}}<br>
@@ -150,7 +150,7 @@
 	<div id="fullscreenPhotoContainer">
 		<img id="closeFullscreen" ng-click="closeFullscreen()" src="close.svg" />
 		<img id="infoFullscreen" ng-click="showInfo()" src="info.svg" />
-		<img id="likeButton" ng-click="sendLike()" src="like.png" />
+		<img id="likeButton" ng-click="sendLikeFullScreen()" src="like.png" />
 		<img ng-src="{{fullscreenPhotoURL}}" id="fullscreenPhoto" />
 		<img id="left" src="left.svg" ng-click="switchPhoto(0)" />
 		<img id="right" src="right.svg" ng-click="switchPhoto(1)" />
