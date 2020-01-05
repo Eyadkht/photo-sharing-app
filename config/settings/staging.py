@@ -1,6 +1,5 @@
 from .base import *
 
-
 # SECURITY WARNING: App Engine's security features ensure that it is safe to
 # have ALLOWED_HOSTS = ['*'] when the app is deployed. If you deploy a Django
 # app not on App Engine, make sure to set an appropriate host here.
@@ -31,3 +30,7 @@ DATABASES = {
 }
 
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.166.110.206', 'tallyapp.me', 'www.tallyapp.me']
+from google.oauth2 import service_account
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'photosharing_storage'

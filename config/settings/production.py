@@ -29,3 +29,6 @@ DATABASES = {
             'NAME': 'photosharingapp_db',
         }
 }
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'photosharing_storage'

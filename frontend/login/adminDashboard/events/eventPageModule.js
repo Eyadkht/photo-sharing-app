@@ -1,0 +1,1 @@
+var eventPageModule = angular.module("eventPageModule", ['ngCookies','angular-jwt']);
