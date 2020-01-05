@@ -126,6 +126,7 @@ loginRegisterModule.controller("loginRegisterController", ['$scope', '$http','$w
 		//This represents whether or not the given password is valid
 		var isValid = true;
 
+		if($scope.password!=$scope.confirmpassword){ console.log("here"); isValid = false; }
 		// If the password is less than 8 chars then it is invalid
 		if(password.length < 8){ isValid = false; }
 

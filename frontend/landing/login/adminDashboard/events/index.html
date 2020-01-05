@@ -51,7 +51,7 @@
 
 					<form class="text-center p-5">
 						<h6>Please enter the pin.</h6>
-						<input type="text" ng-model="pin" class="form-control mb-1" placeholder="Pin" required /><br>
+						<input type="password" ng-model="pin" class="form-control mb-1" placeholder="Pin" required /><br>
 						<button type="button" class="btn btn-lg btn-block btn-outline-secondary"
 							ng-click="getImagesWithPin()" data-dismiss="modal">Ok</button>
 					</form>
@@ -117,7 +117,7 @@
 					<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
 					<div class="row" style="padding-bottom: 10px;">
 						<div class="col-xs-4 col-md-4 " ng-click="downloadImage($index)"><img src="download.png" style="width: 30px; height: 30px; margin-bottom: 10px" /></div>
-						<div class="col-xs-4 col-md-4" ng-click="getImageID($index)" data-toggle="modal"
+						<div class="col-xs-4 col-md-4" ng-click="getImageID($index)" ng-show="admin=='true'" data-toggle="modal"
 							data-target="#confirmDelete"><img src="delete.png" style="width: 30px; height: 30px ; margin-bottom: 10px" /></div>
 						<div class="col-xs-4 col-md-4 " ng-click="sendLike($index)">
 							<img src="like.png" style="width: 30px; height: 30px" />
@@ -167,12 +167,6 @@
 							Confirm Delete Photos?
 						</h6>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal"
-							ng-click="deleteImage()">Yes</button>
-						<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-					</div>
-
 				</div>
 			</div>
 		</div>

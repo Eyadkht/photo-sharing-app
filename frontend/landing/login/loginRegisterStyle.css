@@ -20,8 +20,7 @@
   
   body {
     background:#e9ecef;
-
-    background: linear-gradient(to right,#e9ecef,#e9ecef);
+    background: linear-gradient(to right,#3c96ff 0%,#2dfbff 100%);
   }
   
   .card-signin {

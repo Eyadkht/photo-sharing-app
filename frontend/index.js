@@ -19,7 +19,7 @@ app.set('port', process.env.PORT || 3000);
 // var uploadVars = CloudStorage.uploadRequest("example.jpeg", "key" + Date.now());
 
 //Organiser Login
-app.use('/', express.static('login'));
+app.use('/', express.static('landing'));
 
 //Google Cloud Storage details -> serve as API to AngularJs
 app.get('/storage', function (req, res) {
@@ -29,6 +29,6 @@ app.get('/storage', function (req, res) {
 
 
 // Google cloud only works on 8080
-app.listen(8080, () => {
-  console.log('Express app started at port 8080');
+app.listen(8081, () => {
+  console.log('Express app started at port 8081');
 });

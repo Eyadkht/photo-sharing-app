@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+	<!-- AngularJs -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-cookies.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/angular-jwt@0.1.11/dist/angular-jwt.min.js"></script>
+
+	<title>PhotoShare</title>
+	<link rel="stylesheet" href="adminDashboardStyle.css" />
+	<script src="adminDashboardModule.js"></script>
+	<script src="adminDashboardController.js"></script>
+</head>
+
+<body ng-app="adminDashboardModule" ng-controller="adminDashboardController" id="application">
+	<nav class="navbar navbar-expand-lg navbar-light bg-white	">
+		<h5 class="my-0 mr-md-auto font-weight-normal"> Admin Dashboard</h5>
+		<button class="btn btn-outline-primary" data-toggle="modal"
+		data-target="#editMyDetails" > Edit my details </button>
+		<button class="btn btn-outline-primary" ng-click="logout()" style="margin-left: 10px; "> Logout </button>
+	</nav>
+
+
+
+
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
+			<h1 class="display-3">Welcome to PhotoShare, {{username}}!</h1>
+			<p>Need a description here.</p>
+			<button class="btn btn-primary btn-lg" id="createEventButton" data-toggle="modal"
+				data-target="#createEvent">Create Event</button>
+		</div>
+	</div>
+
+
+
+
+	<div class="container">
+		<h2 class="display-5">{{title}}</h1>
+			<div class="card-deck mb-3 text-center" ng-repeat="event in events">
+				<div class="card mb-4 box-shadow">
+					<div class="card-header">
+						<h4 class="my-0 font-weight-normal">{{event.name}}</h4>
+						<h4 class="my-0 font-weight-normal" ng-show="event.private == true ">[Private]</h4>
+					</div>
+					<div class="card-body">
+						<h7 class="card-title pricing-card-title">Description: {{event.description}}</h7><br>
+						<h7 class="card-title pricing-card-title">Location: {{event.location}}</h7><br>
+						<h7 class="card-title pricing-card-title">{{event.date}}</h7>
+							<div class="row" style="padding-bottom: 10px;">
+								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#showImage"
+									ng-click="showQR(event)"><img src="qr.png" /> Show QR
+								</div>
+								<div class="col-md-3 col-xs-3" data-toggle="modal" data-target="#editEvent"
+									ng-click="displayEvent($index)">
+									<img src="edit.svg" />Edit</div>
+								<div class="col-md-3 col-xs-3"  data-toggle="modal" data-target="#confirmDelete"><img
+										src="delete.png" ng-click="getEventID($index)"/>Delete</div>
+							</div>
+							<button type="button" class="btn btn-lg btn-block btn-outline-primary"
+								ng-click="eventlink(event)">Go to Event Page</button>
+					</div>
+				</div>
+			</div>
+	</div>
+
+
+	<div id="editMyDetails" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit My Details</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<div class="modal-body">
+					<form class="form-signin">
+						<input type="text" ng-model="username" class="form-control mb-1" placeholder="username"
+							required /><br>
+							<input type="email" id="email" class="form-control" placeholder="email" autofocus ng-model="email" /><br>
+						<input type="password" ng-model="password" class="form-control mb-1"
+							placeholder="password" /><br>
+						<input type="password" ng-model="password" class="form-control mb-1"
+							placeholder="Confirm Password" /><br>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="createEventSubmit" ng-click="editUserDetails()">Edit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="createEvent" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Create Event</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<div class="modal-body">
+					<form class="text-center p-5">
+						<input type="text" ng-model="eventName" class="form-control mb-1" placeholder="Name"
+							required /><br>
+						<input type="date" ng-model="eventDate" class="form-control mb-1" placeholder="Date" required /><br>
+						<input type="number" ng-model="eventPin" class="form-control mb-1"
+							placeholder="Pin (Digits Only)" /><br>
+						<input type="text" ng-model="eventDescription" class="form-control mb-1"
+							placeholder="Description" required /><br>
+						<input type="text" ng-model="eventLocation" class="form-control mb-1"
+							placeholder="Location" /><br>
+							<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="defaultUnchecked" ng-model="private">
+									<label class="custom-control-label" for="defaultUnchecked">Private</label>
+								</div>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="createEventSubmit" ng-click="createEvent()">Create</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="showImage" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">QR code</h1>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<img id="qr"
+					ng-src="{{qr_url}}" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="confirmDelete" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h6>
+						Confirm Delete Event?
+					</h6>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						ng-click="deleteEvent()">Yes</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+
+	<div id="editEvent" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit Event</h1>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<div class="modal-body">
+					<form class="text-center p-5">
+						<input type="text" ng-model="EditeventName" class="form-control mb-1" placeholder="Name"
+							required /><br>
+						<input type="date" ng-model="EditeventDate" class="form-control mb-1" placeholder="Date" /><br>
+						<input type="number" ng-model="EditeventPin" class="form-control mb-1"
+							placeholder="Pin (Digits Only)" /><br>
+						<input type="text" ng-model="EditeventDescription" class="form-control mb-1"
+							placeholder="Description" required /><br>
+						<input type="text" ng-model="EditeventLocation" class="form-control mb-1"
+							placeholder="Location" /><br>
+							<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="defaultEditUnchecked" ng-model="EditeventPrivate">
+									<label class="custom-control-label" for="defaultEditUnchecked">Private</label>
+								</div>
+						<button type="button" class="btn btn-lg btn-block btn-outline-primary" data-dismiss="modal"
+							id="EditEventSubmit" ng-click="saveEvent()">Edit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+
+
+
+</html>

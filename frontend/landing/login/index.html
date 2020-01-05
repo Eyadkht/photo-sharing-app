@@ -61,8 +61,8 @@
 									  </div>
 
 									  <div class="form-label-group">
-											<input type="password" id="confirm_password" class="form-control" placeholder="Password" required>
-											<label for="confirm_password">Confirm Password</label><div id="invalidPassword" ng-show="togglePasswordInvalid =='true'">Password must be at least 8 characters long, have a combination of both letters and numbers, and be hard to guess.</div>
+											<input type="password" id="confirm_password" class="form-control" placeholder="Password" ng-model="confirmpassword" required>
+											<label for="confirm_password">Confirm Password</label><div id="invalidPassword" ng-show="togglePasswordInvalid =='true'">Password must be at least 8 characters long, have a combination of both letters and numbers, and password and confirm password should be equal.</div>
 										
 										</div>
 
@@ -76,6 +76,7 @@
 			</div>
 		</div>
 	</div>
+
 </body>
 
 </html>
