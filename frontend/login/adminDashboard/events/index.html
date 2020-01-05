@@ -41,25 +41,24 @@
 	</nav>
 
 	<div id="getPin" class="modal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">This is a private event.</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-					<div class="modal-body">
-	
-						<form class="text-center p-5">
-							<h6>Please enter the pin.</h6>
-							<input type="text" ng-model="pin" class="form-control mb-1" placeholder="Pin"
-								required /><br>
-							<button type="button" class="btn btn-lg btn-block btn-outline-secondary" ng-click="getImagesWithPin()"
-								data-dismiss="modal">Ok</button>
-						</form>
-					</div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">This is a private event.</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+
+					<form class="text-center p-5">
+						<h6>Please enter the pin.</h6>
+						<input type="text" ng-model="pin" class="form-control mb-1" placeholder="Pin" required /><br>
+						<button type="button" class="btn btn-lg btn-block btn-outline-secondary"
+							ng-click="getImagesWithPin()" data-dismiss="modal">Ok</button>
+					</form>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
 	<div id="myModal" class="modal">
@@ -112,73 +111,71 @@
 
 	<div id="photoSection">
 		<div class="row">
-			<div class="photoGrid col-sm-2 col-md-2 col-xs-4"
+			<div class="photoGrid col-sm-4 col-md-4 col-xs-4"
 				ng-repeat="photo in photos | startFrom:currentPage*pageSize | limitTo:pageSize" id="photo$index">
-				<div class="row">
-				<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" class="col-md-offset-1"/>
-				</div>
-				<div class="row">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<button ng-click="downloadImage($index)" class="col-sm-3 col-md-3 col-xs-6 btn btn-success btn-sm">Download</button>
-					&nbsp;&nbsp;
-					<button ng-click="getImageID($index)" data-toggle="modal"
-						data-target="#confirmDelete" class="col-sm-3 col-md-3 col-xs-6 btn btn-danger btn-sm" >Delete</button>
-						&nbsp;
-					<img ng-click="sendLike($index)" src="like.png" class="col-sm-3 col-md-3 col-xs-6" width=25 height=25/>
-				</div>
-				<div class="row col-sm-9 col-md-9 col-xs-27">
-						Uploaded By: {{photo.uploadedBy}}<br>
-						Date: {{photo.date | date:'yyyy-MM-dd' }}<br>
-						Likes {{photo.likes}}
+				<div class="card-body">
+					<img ng-src="{{photo.URL}}" ng-click="fullscreenPhoto($index)" />
+					<div class="row" style="padding-bottom: 10px;">
+						<div class="col-xs-4 col-md-4 " ng-click="downloadImage($index)"><img src="download.png" style="width: 30px; height: 30px; margin-bottom: 10px" /></div>
+						<div class="col-xs-4 col-md-4" ng-click="getImageID($index)" data-toggle="modal"
+							data-target="#confirmDelete"><img src="delete.png" style="width: 30px; height: 30px ; margin-bottom: 10px" /></div>
+						<div class="col-xs-4 col-md-4 " ng-click="sendLike($index)">
+							<img src="like.png" style="width: 30px; height: 30px" />
+						</div>
+					</div>
+					<h6> By: {{photo.uploadedBy}} <br>
+					Date: {{photo.date | date:'yyyy-MM-dd' }}<br>
+					Likes {{photo.likes}}</h6>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="container h-100" ng-show="photos.length>=8">
+		<div class="container h-100" ng-show="photos.length>=8">
 			<div class="row h-100 justify-content-center align-items-center">
-		<button  class="btn btn-outline-primary" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-			Previous
-		</button>
-		{{currentPage+1}}/{{numberOfPages()}}
-		<button  class="btn btn-outline-primary" ng-disabled="currentPage >= photos.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-			Next
-		</button>
-		</div>
-	</div>
-
-	<div id="fullscreenPhotoContainer">
-		<img id="closeFullscreen" ng-click="closeFullscreen()" src="close.svg" />
-		<img id="infoFullscreen" ng-click="showInfo()" src="info.svg" />
-		<img id="likeButton" ng-click="sendLikeFullScreen()" src="like.png" />
-		<img ng-src="{{fullscreenPhotoURL}}" id="fullscreenPhoto" />
-		<img id="left" src="left.svg" ng-click="switchPhoto(0)" />
-		<img id="right" src="right.svg" ng-click="switchPhoto(1)" />
-		<div id="photoInfo">
-			Uploaded By: {{fullscreenUploadedBy}}<br>
-			Date: {{fullscreenDate}}<br>
-			Likes {{fullscreenlikes}}
-			<div id="closeInfo" ng-click="closeInfo()">OK</div>
-		</div>
-	</div>
-
-	<div id="confirmDelete" class="modal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					<h6>
-						Confirm Delete Photos?
-					</h6>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						ng-click="deleteImage()">Yes</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-				</div>
-
+				<button class="btn btn-outline-primary" ng-disabled="currentPage == 0"
+					ng-click="currentPage=currentPage-1">
+					Previous
+				</button>
+				{{currentPage+1}}/{{numberOfPages()}}
+				<button class="btn btn-outline-primary" ng-disabled="currentPage >= photos.length/pageSize - 1"
+					ng-click="currentPage=currentPage+1">
+					Next
+				</button>
 			</div>
 		</div>
-	</div>
+
+		<div id="fullscreenPhotoContainer">
+			<img id="closeFullscreen" ng-click="closeFullscreen()" src="close.svg" />
+			<img id="infoFullscreen" ng-click="showInfo()" src="info.svg" />
+			<img id="likeButton" ng-click="sendLikeFullScreen()" src="like.png" />
+			<img ng-src="{{fullscreenPhotoURL}}" id="fullscreenPhoto" />
+			<img id="left" src="left.svg" ng-click="switchPhoto(0)" />
+			<img id="right" src="right.svg" ng-click="switchPhoto(1)" />
+			<div id="photoInfo">
+				Uploaded By: {{fullscreenUploadedBy}}<br>
+				Date: {{fullscreenDate}}<br>
+				Likes {{fullscreenlikes}}
+				<div id="closeInfo" ng-click="closeInfo()">OK</div>
+			</div>
+		</div>
+
+		<div id="confirmDelete" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<h6>
+							Confirm Delete Photos?
+						</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							ng-click="deleteImage()">Yes</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
 
 
 </body>
