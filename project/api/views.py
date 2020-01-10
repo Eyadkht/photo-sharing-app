@@ -161,8 +161,8 @@ def country_votes_per_resolution(dataset,ccode):
 
 class VotingSimilarityTradeView(APIView):
     def get(self, request, *args, **kwargs):
-        dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/UNGA_data_v3.zip",encoding='cp1252')
-        trade_dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/Dyadic_COW_4.0.zip",encoding='cp1252')
+        dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/UNGA_data_v3.csv",encoding='cp1252')
+        trade_dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/Dyadic_COW_4.0.csv",encoding='cp1252')
         ccode1 = int(request.GET.get('ccode1', None))
         ccode2 = int(request.GET.get('ccode2', None))
         decade = request.GET.get('decade', None)
@@ -199,7 +199,7 @@ class VotingSimilarityTradeView(APIView):
 class VotingCountryPerResolutionView(APIView):
     
     def get(self, request, *args, **kwargs):
-        dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/UNGA_data_v3.zip",encoding='cp1252')
+        dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/UNGA_data_v3.csv",encoding='cp1252')
         ccode = int(request.GET.get('ccode', None))
         context = country_votes_per_resolution(dataset,ccode)
         return Response(context, status=status.HTTP_200_OK)
