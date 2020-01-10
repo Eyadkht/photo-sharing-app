@@ -7,7 +7,7 @@ from .base import *
 #ALLOWED_HOSTS = ['localhost','www.domainname.com']
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
+DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Update the secret key to a value of your own before deploying the app.
