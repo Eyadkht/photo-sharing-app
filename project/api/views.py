@@ -9,8 +9,8 @@ from rest_framework.response import Response
 import scipy
 from scipy.stats import pearsonr
 
-dataset = pd.read_csv(settings.BASE_DIR + "UNGA_data_v3.zip",encoding='cp1252')
-trade_dataset = pd.read_csv(settings.BASE_DIR + "Dyadic_COW_4.0.zip",encoding='cp1252')
+dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/UNGA_data_v3.zip",encoding='cp1252')
+trade_dataset = pd.read_csv("https://datavizappstore.z33.web.core.windows.net/Dyadic_COW_4.0.zip",encoding='cp1252')
 
 def trade_volume(data,country1,country2,year):
     countries_code=[country1,country2]
