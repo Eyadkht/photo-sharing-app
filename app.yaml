@@ -1,6 +1,6 @@
 # [START django_app]
 runtime: python37
-
+entrypoint: gunicorn -t 180 -b :$PORT main:app
 handlers:
 # This configures Google App Engine to serve the files in the app's static
 # directory.
