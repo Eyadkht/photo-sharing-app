@@ -1,5 +1,6 @@
 from django.urls import path
 from project.api.users.views import UserDetail, UserList
+from project.api.views import VotingCountryPerResolutionView, VotingSimilarityTradeView
 from project.api.events.views import EventDetail, EventList, EventDetailPublicUser
 from project.api.events.views import ImageUploadView, ImageDeleteView, MediaInteraction
 
@@ -12,4 +13,7 @@ urlpatterns = [
     path('upload_image/', ImageUploadView.as_view()),
     path('delete_image/<int:pk>', ImageDeleteView.as_view()),
     path('interact_media/',MediaInteraction.as_view()),
+    path('interact_media/',MediaInteraction.as_view()),
+    path('voting_country_resolutions/',VotingCountryPerResolutionView.as_view()),
+     path('voting_similarity/',VotingSimilarityTradeView.as_view()),
 ]
