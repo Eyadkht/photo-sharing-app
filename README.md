@@ -1,18 +1,14 @@
-# Photosharing Application Instructions
+# Overview  
+Photoshare is a session-based event platform that enables users to create temporary photo
+storage (space) allowing event attendees to share photos instantly.
 
-# Tutorial on Uploading a Django Application to Google App Engine Standard
-See our [Running Django in the App Engine Standard Environment](https://cloud.google.com/python/django/appengine) tutorial for instructions for setting up and deploying this sample application.
+# Application Architecture
+The architecture of the application was designed in a decentralized manner, where both, front-end and back-end are completely independent. Decoupling the application components helps in managing resourcres sepratly and support in scaling the application when needed.  
 
-# Applications Links
-Staging (Testing) Application https://photosharingapp-staging.appspot.com/admin  
-Production Application https://photosharingapp-261121.appspot.com/admin  
-Frontend UI https://photosharing-261420.appspot.com/ （Rei's Google Cloud)
-
-# Tutorial
-See our [Running Django in the App Engine Standard Environment](https://cloud.google.com/python/django/appengine) tutorial for instructions for setting up and deploying this sample application.
-
-# FrontEnd
-[Angular.js](https://angularjs.org/) is chosen as the front-end framework and [Express.js](https://expressjs.com/) is used to host the front-end server. This [tutorial](https://cloud.google.com/community/tutorials/run-expressjs-on-google-app-engine) is used to host the Node.JS and Express.JS on Google Cloud engine. To deploy into Goggle App, type `gcloud app deploy` in Cloud Shell.
+![alt text](https://i.imgur.com/DS01vXl.png)  
 
 
-
+# Application Use Cases  
+•	People who want to share photos with their friends after they attended a wedding/birthday party or enjoyed a holiday.
+•	Event Organizers/businesses that hold events could enhance users experience and have a proper platform to share photos quickly with attendees.
+•	Integrated into other event management platforms such as Eventbrite and Facebook events.
