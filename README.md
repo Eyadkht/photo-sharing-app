@@ -9,6 +9,8 @@ The architecture of the application was designed in a decentralized manner, wher
 
 
 # Application Use Cases  
-•	People who want to share photos with their friends after they attended a wedding/birthday party or enjoyed a holiday.
-•	Event Organizers/businesses that hold events could enhance users experience and have a proper platform to share photos quickly with attendees.
-•	Integrated into other event management platforms such as Eventbrite and Facebook events.
+•	People who want to share photos with their friends after they attended a wedding/birthday party or enjoyed a holiday.  
+
+•	Event Organizers/businesses that hold events could enhance users experience and have a proper platform to share photos quickly with attendees.  
+
+•	Integrated into other event management platforms such as Eventbrite and Facebook events.  
